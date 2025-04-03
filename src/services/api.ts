@@ -16,6 +16,7 @@ export interface BetHistoryFilters {
   startDate?: string;
   endDate?: string;
   category?: string;
+  searchTerm?: string;
 }
 
 export interface BetHistory {
@@ -51,8 +52,13 @@ export interface LiveBet {
 }
 
 export async function getDashboardData(startDate?: string, endDate?: string): Promise<DashboardData> {
-  try {
-    const response = await fetch(`${API_URL}/api/dashboard?startDate=${startDate}&endDate=${endDate}`);
+  try 
+  {
+    const queryParams = new URLSearchParams();
+     if (startDate) queryParams.append('startDate', startDate);
+     if (endDate) queryParams.append('endDate', endDate);
+
+    const response = await fetch(`${API_URL}/api/BettingAnalysis/dashboard?${queryParams.toString()}`);
     if (!response.ok) {
       throw new Error('Erro ao carregar dados do dashboard');
     }
@@ -68,9 +74,10 @@ export async function getBetHistory(filters: BetHistoryFilters): Promise<BetHist
     const queryParams = new URLSearchParams();
     if (filters.startDate) queryParams.append('startDate', filters.startDate);
     if (filters.endDate) queryParams.append('endDate', filters.endDate);
+    if (filters.searchTerm) queryParams.append('searchTerm', filters.searchTerm);
     if (filters.category) queryParams.append('category', filters.category);
 
-    const response = await fetch(`${API_URL}/api/bets?${queryParams}`);
+    const response = await fetch(`${API_URL}/api/BettingAnalysis/history?${queryParams.toString()}`);
     if (!response.ok) {
       throw new Error('Erro ao carregar histórico de apostas');
     }
@@ -83,8 +90,8 @@ export async function getBetHistory(filters: BetHistoryFilters): Promise<BetHist
 
 export async function getLiveBets(): Promise<LiveBet[]> {
   try {
-    const response = await fetch(`${API_URL}/api/bets/live`);
-    if (!response.ok) {
+    const response = await fetch(`${API_URL}/api/BettingAnalysis/live`);
+      if (!response.ok) {
       throw new Error('Erro ao carregar apostas em tempo real');
     }
     return response.json();
