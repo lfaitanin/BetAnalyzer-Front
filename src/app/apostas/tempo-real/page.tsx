@@ -1,31 +1,32 @@
 'use client';
 
-import { useState } from 'react';
-import { getBetHistory, BetHistory, BetHistoryFilters } from '@/services/api';
-import BetsFilter from '@/components/BetsFilter';
+import { useEffect, useState } from 'react';
+import { getLiveBets, LiveBet } from '@/services/api';
 
-export default function PontosPage() {
-  const [bets, setBets] = useState<BetHistory[]>([]);
+export default function TempoRealPage() {
+  const [bets, setBets] = useState<LiveBet[]>([]);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
-  const loadBets = async (filters: BetHistoryFilters) => {
+  const loadBets = async () => {
     try {
       setLoading(true);
-      const history = await getBetHistory({ ...filters, category: 'Points' });
-      setBets(history);
+      const liveBets = await getLiveBets();
+      setBets(liveBets);
       setError(null);
     } catch (err) {
-      setError('Erro ao carregar histórico de apostas');
+      setError('Erro ao carregar apostas em tempo real');
       console.error(err);
     } finally {
       setLoading(false);
     }
   };
 
-  const handleFilterChange = (filters: BetHistoryFilters) => {
-    loadBets(filters);
-  };
+  useEffect(() => {
+    loadBets();
+    const interval = setInterval(loadBets, 180000); // Atualiza a cada 3 minutos
+    return () => clearInterval(interval);
+  }, []);
 
   if (loading) {
     return (
@@ -45,9 +46,7 @@ export default function PontosPage() {
 
   return (
     <div className="p-6">
-      <h1 className="text-2xl font-bold text-gray-900 mb-6">Histórico de Apostas - Pontos</h1>
-      
-      <BetsFilter onFilterChange={handleFilterChange} />
+      <h1 className="text-2xl font-bold text-gray-900 mb-6">Apostas em Tempo Real</h1>
 
       <div className="bg-white rounded-lg shadow-md overflow-hidden">
         <table className="min-w-full divide-y divide-gray-200">
@@ -56,11 +55,10 @@ export default function PontosPage() {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jogador</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Categoria</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Meta</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Resultado</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Odds</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stake</th>
-              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lucro</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
             </tr>
           </thead>
@@ -70,15 +68,10 @@ export default function PontosPage() {
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bet.date}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bet.playerName}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bet.team}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bet.category}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bet.target}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bet.result}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bet.odds}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">R$ {bet.stake.toFixed(2)}</td>
-                <td className={`px-6 py-4 whitespace-nowrap text-sm ${
-                  bet.profit >= 0 ? 'text-green-600' : 'text-red-600'
-                }`}>
-                  R$ {bet.profit.toFixed(2)}
-                </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span className={`px-2 py-1 text-xs font-medium rounded-full ${
                     bet.status === 'GREEN' ? 'bg-green-100 text-green-800' :

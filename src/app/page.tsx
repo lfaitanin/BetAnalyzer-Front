@@ -1,60 +1,21 @@
 // src/app/page.tsx
 'use client';
 
-import { useEffect, useState } from 'react';
-import { getDashboardData } from '@/services/api';
-import { Line } from 'react-chartjs-2';
+import { useState } from 'react';
+import { getDashboardData, DashboardData } from '@/services/api';
 import DateRangeFilter from '@/components/DateRangeFilter';
-import {
-  Chart as ChartJS,
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-} from 'chart.js';
-import { StatCard } from "@/components/statcard";
-import { RecentBets } from "@/components/RecentBets";
-
-ChartJS.register(
-  CategoryScale,
-  LinearScale,
-  PointElement,
-  LineElement,
-  Title,
-  Tooltip,
-  Legend
-);
-
-interface MonthlyProfit {
-  month: string;
-  profit: number;
-  totalBets: number;
-  successRate: number;
-}
-
-interface DashboardData {
-  monthlyProfit: number;
-  totalProfit: number;
-  successRate: number;
-  totalBets: number;
-  roi: number;
-  monthlyProfits: MonthlyProfit[];
-}
 
 export default function DashboardPage() {
   const [data, setData] = useState<DashboardData | null>(null);
-  const [loading, setLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [startDate, setStartDate] = useState<string>('');
   const [endDate, setEndDate] = useState<string>('');
 
-  const loadDashboardData = async (start?: string, end?: string) => {
+  const loadDashboardData = async (startDate?: string, endDate?: string) => {
     try {
       setLoading(true);
-      const dashboardData = await getDashboardData(start, end);
+      const dashboardData = await getDashboardData(startDate, endDate);
       setData(dashboardData);
       setError(null);
     } catch (err) {
@@ -64,10 +25,6 @@ export default function DashboardPage() {
       setLoading(false);
     }
   };
-
-  useEffect(() => {
-    loadDashboardData();
-  }, []);
 
   const handleDateChange = (newStartDate: string, newEndDate: string) => {
     setStartDate(newStartDate);
@@ -91,96 +48,53 @@ export default function DashboardPage() {
     );
   }
 
-  if (!data) {
-    return null;
-  }
-
-  const chartData = {
-    labels: data.monthlyProfits.map(item => item.month),
-    datasets: [
-      {
-        label: 'Lucro Mensal',
-        data: data.monthlyProfits.map(item => item.profit),
-        borderColor: 'rgb(59, 130, 246)',
-        backgroundColor: 'rgba(59, 130, 246, 0.5)',
-        tension: 0.1
-      }
-    ]
-  };
-
-  const chartOptions = {
-    responsive: true,
-    plugins: {
-      legend: {
-        position: 'top' as const,
-      },
-      title: {
-        display: true,
-        text: 'Evolução do Lucro Mensal'
-      }
-    },
-    scales: {
-      y: {
-        beginAtZero: true
-      }
-    }
-  };
-
   return (
-    <div className="space-y-6 p-6 bg-gray-50">
-      <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
-      
-      <DateRangeFilter 
-        onFilterChange={handleDateChange} 
-        startDate={startDate}
-        endDate={endDate}
-      />
-      
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
+    <div className="p-6">
+      <h1 className="text-2xl font-bold text-gray-900 mb-6">Dashboard</h1>
+
+      <DateRangeFilter onFilterChange={handleDateChange} />
+
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
         <div className="bg-white p-6 rounded-lg shadow-md">
-          <h3 className="text-sm font-medium text-gray-500">Lucro Mensal</h3>
-          <p className={`mt-2 text-3xl font-semibold ${
-            data.monthlyProfit >= 0 ? 'text-green-600' : 'text-red-600'
+          <h2 className="text-sm font-medium text-gray-500 mb-2">Lucro Total</h2>
+          <p className={`text-2xl font-bold ${
+            data?.totalProfit && data.totalProfit >= 0 ? 'text-green-600' : 'text-red-600'
           }`}>
-            R$ {data.monthlyProfit.toFixed(2)}
+            R$ {data?.totalProfit.toFixed(2) || '0.00'}
           </p>
         </div>
 
         <div className="bg-white p-6 rounded-lg shadow-md">
-          <h3 className="text-sm font-medium text-gray-500">Lucro Total</h3>
-          <p className={`mt-2 text-3xl font-semibold ${
-            data.totalProfit >= 0 ? 'text-green-600' : 'text-red-600'
+          <h2 className="text-sm font-medium text-gray-500 mb-2">Taxa de Acerto</h2>
+          <p className="text-2xl font-bold text-gray-900">
+            {data?.winRate.toFixed(2) || '0.00'}%
+          </p>
+        </div>
+
+        <div className="bg-white p-6 rounded-lg shadow-md">
+          <h2 className="text-sm font-medium text-gray-500 mb-2">ROI</h2>
+          <p className={`text-2xl font-bold ${
+            data?.roi && data.roi >= 0 ? 'text-green-600' : 'text-red-600'
           }`}>
-            R$ {data.totalProfit.toFixed(2)}
-          </p>
-        </div>
-        
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h3 className="text-sm font-medium text-gray-500">Taxa de Acerto</h3>
-          <p className="mt-2 text-3xl font-semibold text-gray-900">
-            {data.successRate.toFixed(2)}%
-          </p>
-        </div>
-        
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h3 className="text-sm font-medium text-gray-500">Total de Apostas</h3>
-          <p className="mt-2 text-3xl font-semibold text-gray-900">
-            {data.totalBets}
-          </p>
-        </div>
-        
-        <div className="bg-white p-6 rounded-lg shadow-md">
-          <h3 className="text-sm font-medium text-gray-500">ROI</h3>
-          <p className={`mt-2 text-3xl font-semibold ${
-            data.roi >= 0 ? 'text-green-600' : 'text-red-600'
-          }`}>
-            {data.roi.toFixed(2)}%
+            {data?.roi.toFixed(2) || '0.00'}%
           </p>
         </div>
       </div>
 
       <div className="bg-white p-6 rounded-lg shadow-md">
-        <Line data={chartData} options={chartOptions} />
+        <h2 className="text-lg font-medium text-gray-900 mb-4">Lucro Mensal</h2>
+        <div className="space-y-4">
+          {data?.monthlyProfits.map((month) => (
+            <div key={month.month} className="flex justify-between items-center">
+              <span className="text-gray-600">{month.month}</span>
+              <span className={`font-medium ${
+                month.profit >= 0 ? 'text-green-600' : 'text-red-600'
+              }`}>
+                R$ {month.profit.toFixed(2)}
+              </span>
+            </div>
+          ))}
+        </div>
       </div>
     </div>
   );
