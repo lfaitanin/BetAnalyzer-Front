@@ -1,22 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getLiveBets } from '@/services/api';
-
-interface LiveBet {
-  playerName: string;
-  category: string;
-  game: string;
-  target: number;
-  currentValue: number;
-  remainingValue: number;
-  remainingMinutes: number;
-  requiredPacePerMinute: number;
-  completionPercentage: number;
-  odds: number;
-  potentialProfit: number;
-  status: string;
-}
+import { getLiveBets, LiveBet } from '@/services/api';
 
 export default function LiveBetsPage() {
   const [bets, setBets] = useState<LiveBet[]>([]);
