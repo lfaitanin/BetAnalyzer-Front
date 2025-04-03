@@ -37,8 +37,15 @@ export interface LiveBet {
   playerName: string;
   team: string;
   category: string;
+  game: string;
   target: number;
+  currentValue: number;
+  remainingValue: number;
+  remainingMinutes: number;
+  requiredPacePerMinute: number;
+  completionPercentage: number;
   odds: number;
+  potentialProfit: number;
   stake: number;
   status: 'GREEN' | 'RED' | 'PENDING';
 }

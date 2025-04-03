@@ -55,10 +55,17 @@ export default function TempoRealPage() {
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Data</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jogador</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Time</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Jogo</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Categoria</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Meta</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Valor Atual</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Valor Restante</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Minutos Restantes</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Ritmo Necessário</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">% Conclusão</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Odds</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Stake</th>
+              <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Lucro Potencial</th>
               <th className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
             </tr>
           </thead>
@@ -68,10 +75,21 @@ export default function TempoRealPage() {
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bet.date}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bet.playerName}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bet.team}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bet.game}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bet.category}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bet.target}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bet.currentValue}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bet.remainingValue}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bet.remainingMinutes}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bet.requiredPacePerMinute.toFixed(2)}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bet.completionPercentage.toFixed(1)}%</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bet.odds}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">R$ {bet.stake.toFixed(2)}</td>
+                <td className={`px-6 py-4 whitespace-nowrap text-sm ${
+                  bet.potentialProfit >= 0 ? 'text-green-600' : 'text-red-600'
+                }`}>
+                  R$ {bet.potentialProfit.toFixed(2)}
+                </td>
                 <td className="px-6 py-4 whitespace-nowrap">
                   <span className={`px-2 py-1 text-xs font-medium rounded-full ${
                     bet.status === 'GREEN' ? 'bg-green-100 text-green-800' :
