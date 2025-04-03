@@ -32,6 +32,7 @@ export interface BetHistory {
 }
 
 export interface LiveBet {
+  game: string;
   id: string;
   date: string;
   playerName: string;
@@ -46,7 +47,7 @@ export interface LiveBet {
   odds: number;
   stake: number;
   potentialProfit: number;
-  status: 'GREEN' | 'RED' | 'PENDING';
+  status: 'GREEN' | 'RED' | 'PENDING' | 'Provável' | 'Risco';
 }
 
 export async function getDashboardData(startDate?: string, endDate?: string): Promise<DashboardData> {
