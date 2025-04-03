@@ -1,7 +1,8 @@
 'use client';
 
 import { useState } from 'react';
-import { BetsFilter } from '@/components/BetsFilter';
+import BetsFilter from '@/components/BetsFilter';
+import { BetHistoryFilters } from '@/services/api';
 
 interface Bet {
   id: string;
@@ -17,7 +18,7 @@ interface Bet {
 }
 
 export default function TresPontosPage() {
-  const [filteredBets, setFilteredBets] = useState<Bet[]>([
+  const [filteredBets] = useState<Bet[]>([
     {
       id: '1',
       player: 'Stephen Curry',
@@ -32,7 +33,7 @@ export default function TresPontosPage() {
     },
   ]);
 
-  const handleFilterChange = (filters: any) => {
+  const handleFilterChange = (filters: BetHistoryFilters) => {
     console.log('Filtros aplicados:', filters);
   };
 

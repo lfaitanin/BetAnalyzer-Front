@@ -9,8 +9,8 @@ export default function DashboardPage() {
   const [data, setData] = useState<DashboardData | null>(null);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [startDate, setStartDate] = useState<string>('');
-  const [endDate, setEndDate] = useState<string>('');
+  const [startDates, setStartDate] = useState<string>('');
+  const [endDates, setEndDate] = useState<string>('');
 
   const loadDashboardData = async (startDate?: string, endDate?: string) => {
     try {
@@ -21,6 +21,7 @@ export default function DashboardPage() {
     } catch (err) {
       setError('Erro ao carregar dados do dashboard');
       console.error(err);
+      console.log(startDates + endDates)
     } finally {
       setLoading(false);
     }
