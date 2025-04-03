@@ -1,11 +1,13 @@
-interface MonthlyProfit {
+const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7275';
+
+export interface MonthlyProfit {
   month: string;
   profit: number;
   totalBets: number;
   successRate: number;
 }
 
-interface DashboardData {
+export interface DashboardData {
   monthlyProfit: number;
   totalProfit: number;
   successRate: number;
@@ -14,23 +16,25 @@ interface DashboardData {
   monthlyProfits: MonthlyProfit[];
 }
 
-interface BetHistory {
-  data: string;
+export interface BetHistory {
+  id: number;
+  date: string;
   playerName: string;
-  time: string;
-  meta: number;
-  resultado: number;
+  team: string;
+  category: string;
+  target: number;
+  result: number;
   odds: number;
   stake: number;
-  lucro: number;
+  profit: number;
   status: string;
 }
 
-interface BetHistoryFilters {
-  searchTerm?: string;
+export interface BetHistoryFilters {
   startDate?: string;
   endDate?: string;
-  category: 'Points' | 'Rebounds' | 'Assists' | 'ThreePoints';
+  searchTerm?: string;
+  category?: 'Points' | 'Rebounds' | 'Assists' | 'ThreePoints';
 }
 
 export interface LiveBet {
@@ -54,7 +58,7 @@ export async function getDashboardData(startDate?: string, endDate?: string): Pr
     if (startDate) queryParams.append('startDate', startDate);
     if (endDate) queryParams.append('endDate', endDate);
 
-    const response = await fetch(`https://localhost:7275/api/BettingAnalysis/dashboard?${queryParams.toString()}`);
+    const response = await fetch(`${API_URL}/api/BettingAnalysis/dashboard?${queryParams.toString()}`);
     if (!response.ok) {
       throw new Error('Erro ao buscar dados do dashboard');
     }
@@ -66,27 +70,31 @@ export async function getDashboardData(startDate?: string, endDate?: string): Pr
 }
 
 export async function getBetHistory(filters: BetHistoryFilters): Promise<BetHistory[]> {
-  const queryParams = new URLSearchParams();
-  
-  if (filters.searchTerm) queryParams.append('searchTerm', filters.searchTerm);
-  if (filters.startDate) queryParams.append('startDate', filters.startDate);
-  if (filters.endDate) queryParams.append('endDate', filters.endDate);
-  queryParams.append('category', filters.category);
+  try {
+    const queryParams = new URLSearchParams();
+    if (filters.startDate) queryParams.append('startDate', filters.startDate);
+    if (filters.endDate) queryParams.append('endDate', filters.endDate);
+    if (filters.searchTerm) queryParams.append('searchTerm', filters.searchTerm);
+    if (filters.category) queryParams.append('category', filters.category);
 
-  const response = await fetch(`https://localhost:7275/api/BettingAnalysis/history?${queryParams.toString()}`);
-  if (!response.ok) {
-    throw new Error('Falha ao carregar histórico de apostas');
+    const response = await fetch(`${API_URL}/api/BettingAnalysis/history?${queryParams.toString()}`);
+    if (!response.ok) {
+      throw new Error('Erro ao buscar histórico de apostas');
+    }
+    return response.json();
+  } catch (error) {
+    console.error('Erro ao buscar histórico de apostas:', error);
+    throw error;
   }
-  return response.json();
 }
 
 export async function getLiveBets(): Promise<LiveBet[]> {
   try {
-    const response = await fetch('https://localhost:7275/api/BettingAnalysis/live');
+    const response = await fetch(`${API_URL}/api/BettingAnalysis/live`);
     if (!response.ok) {
       throw new Error('Erro ao buscar apostas em tempo real');
     }
-    return await response.json();
+    return response.json();
   } catch (error) {
     console.error('Erro ao buscar apostas em tempo real:', error);
     throw error;
