@@ -1,7 +1,9 @@
 'use client';
 
-interface DateRangeFilterProps {
-  onFilterChange: (startDate: string, endDate: string) => void;
+export interface DateRangeFilterProps {
+  startDate: string;
+  endDate: string;
+  onFilterChange: (newStartDate: string, newEndDate: string) => void;
 }
 
 export default function DateRangeFilter({ onFilterChange }: DateRangeFilterProps) {

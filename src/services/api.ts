@@ -6,6 +6,9 @@ export interface MonthlyProfit {
 }
 
 export interface DashboardData {
+  monthlyProfit: number;
+  totalBets: number;
+  successRate: number;
   totalProfit: number;
   winRate: number;
   roi: number;
