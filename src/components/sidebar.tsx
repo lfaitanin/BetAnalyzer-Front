@@ -34,6 +34,11 @@ const menuItems = [
     title: 'Apostas em Tempo Real',
     path: '/apostas/ao-vivo',
     icon: 'live_tv'
+  },
+  {
+    title: 'Live',
+    path: '/apostas/tempo-real',
+    icon: 'streetview'
   }
 ];
 
