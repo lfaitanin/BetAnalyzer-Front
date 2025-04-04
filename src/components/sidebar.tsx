@@ -35,11 +35,11 @@ const menuItems = [
     path: '/apostas/ao-vivo',
     icon: 'live_tv'
   },
-  {
-    title: 'Live',
-    path: '/apostas/tempo-real',
-    icon: 'streetview'
-  }
+  // {
+  //   title: 'Live',
+  //   path: '/apostas/tempo-real',
+  //   icon: 'streetview'
+  // }
 ];
 
 export function Sidebar() {
