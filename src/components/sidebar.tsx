@@ -47,7 +47,7 @@ export function Sidebar() {
 
   return (
     <aside className="w-64 bg-gray-900 min-h-screen p-4">
-      <div className="text-white text-xl font-bold mb-8 px-4">BasketBet Pro</div>
+      <div className="text-white text-xl font-bold mb-8 px-4">BOT NBA - FAITANIN</div>
       <nav className="space-y-2">
         {menuItems.map((item) => {
           const isActive = pathname === item.path;
