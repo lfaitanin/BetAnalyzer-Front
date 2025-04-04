@@ -58,8 +58,8 @@ export default function LiveBetsPage() {
                   <p className="text-sm text-gray-500">{bet.category}</p>
                 </div>
                 <span className={`px-2 py-1 text-xs font-medium rounded-full ${
-                  bet.status === 'Provável' ? 'bg-green-100 text-green-800' :
-                  bet.status === 'Risco' ? 'bg-yellow-100 text-yellow-800' :
+                  bet.status === 'Meta Alcançada' ? 'bg-green-100 text-green-800' :
+                  bet.status === 'Muito Provável' || 'Provável' || 'Possível'  || 'Improvável' ? 'bg-yellow-100 text-yellow-800' :
                   'bg-red-100 text-red-800'
                 }`}>
                   {bet.status}
