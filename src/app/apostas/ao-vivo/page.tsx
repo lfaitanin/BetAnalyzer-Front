@@ -77,7 +77,7 @@ export default function LiveBetsPage() {
                 <div className="grid grid-cols-2 gap-4">
                   <div>
                     <p className="text-sm text-gray-500">Meta</p>
-                    <p className="text-sm font-medium text-gray-900">{bet.target}</p>
+                    <p className="text-sm font-medium text-gray-900">Under {bet.target}</p>
                   </div>
                   <div>
                     <p className="text-sm text-gray-500">Atual</p>
