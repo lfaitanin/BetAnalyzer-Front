@@ -51,7 +51,7 @@ export interface LiveBet {
   odds: number;
   stake: number;
   potentialProfit: number;
-  status: 'Meta Alcançada' | 'Meta Não Alcançada' | 'PENDING' | 'Meta Alcançada' | 'Risco' | 'Muito Provável' | 'Provável' | 'Possível';
+  status: 'Meta Alcançada' | 'Meta Não Alcançada' | 'Meta Alcançada' | 'Risco' | 'Muito Provável' | 'Provável' | 'Possível' | 'Improvável'; 
 }
 
 export async function getDashboardData(startDate?: string, endDate?: string): Promise<DashboardData> {
