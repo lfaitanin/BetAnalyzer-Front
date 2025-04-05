@@ -15,7 +15,7 @@ export default function LiveBetsPage() {
         setBets(liveBets);
         setError(null);
       } catch (err) {
-        setError('Erro ao carregar apostas em tempo real');
+        setError('Erro ao carregar apostas em tempo real!');
         console.error(err);
       } finally {
         setLoading(false);
