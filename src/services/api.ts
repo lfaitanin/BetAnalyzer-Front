@@ -32,7 +32,7 @@ export interface BetHistory {
   result: number;
   odds: number;
   stake: number;
-  lucro: number;
+  profit: number;
   status: 'Ganhou' | 'Perdeu' | 'Pendente';
 }
 

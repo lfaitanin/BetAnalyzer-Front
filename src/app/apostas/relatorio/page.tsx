@@ -73,7 +73,7 @@ export default function RelatorioPage() {
       }
       acc[categoria].total += 1;
       acc[categoria].stakeTotal += bet.stake;
-      acc[categoria].profitTotal += bet.lucro;
+      acc[categoria].profitTotal += bet.profit;
       if (bet.status === 'Ganhou') {
         acc[categoria].wins += 1;
       }
@@ -110,7 +110,7 @@ export default function RelatorioPage() {
         }
         acc[categoria].total += 1;
         acc[categoria].stakeTotal += bet.stake;
-        acc[categoria].profitTotal += bet.lucro;
+        acc[categoria].profitTotal += bet.profit;
         if (bet.status === 'Ganhou') {
           acc[categoria].wins += 1;
         }
@@ -143,7 +143,7 @@ export default function RelatorioPage() {
       }
       acc[bet.playerName].total += 1;
       acc[bet.playerName].stakeTotal += bet.stake;
-      acc[bet.playerName].profitTotal += bet.lucro;
+      acc[bet.playerName].profitTotal += bet.profit;
       if (bet.status === 'Ganhou') {
         acc[bet.playerName].wins += 1;
       }
