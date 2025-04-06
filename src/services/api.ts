@@ -27,12 +27,13 @@ export interface BetHistory {
   date: string;
   playerName: string;
   team: string;
+  categoria: string;
   target: number;
   result: number;
   odds: number;
   stake: number;
-  profit: number;
-  status: 'GREEN' | 'RED' | 'PENDING';
+  lucro: number;
+  status: 'Ganhou' | 'Perdeu' | 'Pendente';
 }
 
 export interface LiveBet {

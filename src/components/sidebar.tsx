@@ -35,6 +35,11 @@ const menuItems = [
     path: '/apostas/ao-vivo',
     icon: 'live_tv'
   },
+  {
+    title: 'Relatório',
+    path: '/apostas/relatorio',
+    icon: 'bar_chart'
+  },
   // {
   //   title: 'Live',
   //   path: '/apostas/tempo-real',
