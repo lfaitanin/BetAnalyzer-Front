@@ -11,6 +11,7 @@
     "prepare-pwa": "npm run svg-to-png && npm run generate-icons"
   },
   "dependencies": {
+    "axios": "^1.8.4",
     "chart.js": "^4.4.8",
     "next": "15.2.4",
     "react": "^19.0.0",

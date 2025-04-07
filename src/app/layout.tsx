@@ -3,6 +3,7 @@ import { Sidebar } from "@/components/sidebar";
 import "./globals.css";
 import PWAInstallPrompt from "@/components/PWAInstallPrompt";
 import Script from "next/script";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 export const metadata: Metadata = {
   title: "BasketBet Pro",
@@ -44,12 +45,10 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
       </head>
       <body className="bg-gray-100">
-        <div className="flex min-h-screen bg-gray-100">
-          <Sidebar />
-          <main className="flex-1 p-2 md:p-6 pt-14 md:pt-6">
-            {children}
-          </main>
-        </div>
+      <AuthProvider>
+
+        {children}
+        </AuthProvider>
         <PWAInstallPrompt />
         <Script src="/sw-register.js" strategy="afterInteractive" />
       </body>

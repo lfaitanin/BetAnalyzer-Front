@@ -4,12 +4,13 @@
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { useState } from 'react';
+import { useAuth } from '@/contexts/AuthContext';
 
 const menuItems = [
   {
-    title: 'Dashboard',
-    path: '/',
-    icon: 'dashboard'
+    title: 'Home',
+    path: '/apostas',
+    icon: 'home'
   },
   {
     title: 'Pontos',
@@ -49,8 +50,14 @@ const menuItems = [
 ];
 
 export function Sidebar() {
+  const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
+  const { user, logout } = useAuth();
   const [isExpanded, setIsExpanded] = useState(false);
+
+  const isActive = (path: string) => {
+    return pathname === path;
+  };
 
   return (
     <>
@@ -90,7 +97,15 @@ export function Sidebar() {
             <span className="material-icons">close</span>
           </button>
         </div>
-
+        <div className="flex items-center px-4 py-3 border-b border-gray-200">
+            <div className="flex-shrink-0">
+              <span className="material-icons text-gray-500">account_circle</span>
+            </div>
+            <div className="ml-3">
+              <p className="text-sm font-medium text-gray-900">{user?.fullName}</p>
+              <p className="text-xs text-gray-500">{user?.email}</p>
+            </div>
+          </div> 
         <nav className="space-y-2">
           {menuItems.map((item) => {
             const isActive = pathname === item.path;
@@ -111,6 +126,15 @@ export function Sidebar() {
             );
           })}
         </nav>
+        <div className="p-4 border-t border-gray-200">
+            <button
+              onClick={logout}
+              className="flex w-full px-1 py-2 text-sm font-medium text-red-600 rounded-md hover:bg-red-50"
+            >
+              <span className="material-icons mr-3">logout</span>
+              Sair
+            </button>
+          </div>
       </aside>
     </>
   );
