@@ -170,7 +170,7 @@ export default function DashboardPage() {
       </div>
 
       <div className="bg-white p-2 rounded-lg shadow-md">
-        <div className="h-[705px]">
+        <div className="h-[665px]">
           <Line data={chartData} options={chartOptions} />
         </div>
       </div>
