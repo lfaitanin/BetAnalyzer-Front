@@ -1,5 +1,4 @@
 import type { Metadata } from "next";
-import { Sidebar } from "@/components/sidebar";
 import "./globals.css";
 import PWAInstallPrompt from "@/components/PWAInstallPrompt";
 import Script from "next/script";
