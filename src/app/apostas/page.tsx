@@ -87,11 +87,11 @@ export default function DashboardPage() {
   }
 
   const chartData = {
-    labels: data.monthlyProfits.map(item => item.month),
+    labels: data.monthlyProfits.map(item => item.month).reverse(),
     datasets: [
       {
         label: 'Lucro Mensal',
-        data: data.monthlyProfits.map(item => item.profit),
+        data: data.monthlyProfits.map(item => item.profit).reverse(),
         borderColor: 'rgb(59, 130, 246)',
         backgroundColor: 'rgba(59, 130, 246, 0.5)',
         tension: 0.1
@@ -101,6 +101,7 @@ export default function DashboardPage() {
 
   const chartOptions = {
     responsive: true,
+    maintainAspectRatio: false,
     plugins: {
       legend: {
         position: 'top' as const,
@@ -118,7 +119,7 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="space-y-4 md:space-y-6 p-2 md:p-6 bg-gray-50">      
+    <div className="space-y-4 md:space-y-2 p-2 md:p-6 bg-gray-50">      
       <DateRangeFilter 
         onFilterChange={handleDateChange} 
         startDate={startDate}
@@ -168,8 +169,10 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
-        <Line data={chartData} options={chartOptions} />
+      <div className="bg-white p-2 rounded-lg shadow-md">
+        <div className="h-[705px]">
+          <Line data={chartData} options={chartOptions} />
+        </div>
       </div>
     </div>
   );
