@@ -50,14 +50,9 @@ const menuItems = [
 ];
 
 export function Sidebar() {
-  const [isOpen, setIsOpen] = useState(false);
   const pathname = usePathname();
   const { user, logout } = useAuth();
   const [isExpanded, setIsExpanded] = useState(false);
-
-  const isActive = (path: string) => {
-    return pathname === path;
-  };
 
   return (
     <>

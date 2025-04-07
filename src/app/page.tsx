@@ -119,7 +119,6 @@ export default function DashboardPage() {
 
   return (
     <div className="space-y-4 md:space-y-6 p-2 md:p-6 bg-gray-50">
-      <h1 className="text-xl md:text-2xl font-bold text-gray-900">Dashboard</h1>
       
       <DateRangeFilter 
         onFilterChange={handleDateChange} 
