@@ -2,7 +2,7 @@
 
 import React, { createContext, useContext, useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { authService, User, RegisterData, LoginData } from '@/services/auth';
+import { authService, User, RegisterData, LoginData, UpdateProfileData } from '@/services/auth';
 
 interface AuthContextType {
   user: User | null;
@@ -13,6 +13,7 @@ interface AuthContextType {
   logout: () => void;
   requestPasswordReset: (email: string) => Promise<void>;
   resetPassword: (token: string, newPassword: string) => Promise<void>;
+  updateProfile: (data: UpdateProfileData) => Promise<void>;
 }
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
@@ -81,6 +82,29 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     await authService.resetPassword(token, newPassword);
   };
 
+  const updateProfile = async (data: UpdateProfileData) => {
+    try {
+      await authService.updateProfile(data);
+      
+      // Atualizar o usuário no estado local
+      if (user) {
+        const updatedUser = {
+          ...user,
+          fullName: data.fullName,
+          email: data.email,
+          defaultStake: data.defaultStake !== undefined ? data.defaultStake : user.defaultStake
+        };
+        
+        setUser(updatedUser);
+        
+        // Atualizar no localStorage
+        localStorage.setItem('user', JSON.stringify(updatedUser));
+      }
+    } catch (error) {
+      throw error;
+    }
+  };
+
   const value = {
     user,
     isAuthenticated: !!user,
@@ -90,6 +114,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     logout,
     requestPasswordReset,
     resetPassword,
+    updateProfile
   };
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;

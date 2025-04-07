@@ -4,11 +4,17 @@ export interface User {
   id: string;
   fullName: string;
   email: string;
+  defaultStake?: number;
+  balance: number;
 }
 
 export interface AuthResponse {
   auth_token: string;
   message: string;
+  fullName: string;
+  email: string;
+  defaultStake: number;
+  balance: number;
 }
 
 export interface RegisterData {
@@ -25,6 +31,15 @@ export interface LoginData {
 
 export interface ResetPasswordData {
   email: string;
+}
+
+export interface UpdateProfileData {
+  fullName: string;
+  email: string;
+  currentPassword?: string;
+  newPassword?: string;
+  defaultStake?: number;
+  balance?: number;
 }
 
 export const authService = {
@@ -95,6 +110,34 @@ export const authService = {
     }
   },
 
+  async updateProfile(data: UpdateProfileData): Promise<void> {
+    const token = this.getToken();
+    if (!token) {
+      throw new Error('Usuário não autenticado');
+    }
+    const userString = localStorage.getItem('user');
+    if (!userString) {
+      throw new Error('Dados do usuário não encontrados no localStorage');
+    }
+  
+    const user = JSON.parse(userString);
+    const userId = user.id; 
+
+    const response = await fetch(`${API_URL}/api/auth/update-profile?id=${userId}`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const error = await response.json();
+      throw new Error(error.message || 'Erro ao atualizar perfil');
+    }
+  },
+
   logout(): void {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
@@ -120,12 +163,14 @@ export const authService = {
   setAuth(data: AuthResponse): void {
     try {
       localStorage.setItem('token', data.auth_token);
-      const tokenPayload = JSON.parse(atob(data.auth_token.split('.')[1]));
       const user: User = {
-        id: tokenPayload.sub,
-        fullName: tokenPayload.fullName,
-        email: tokenPayload.email,
+        id: JSON.parse(atob(data.auth_token.split('.')[1])).sub,
+        fullName: data.fullName,
+        email: data.email,
+        defaultStake: data.defaultStake,  
+        balance: data.balance 
       };
+
       localStorage.setItem('user', JSON.stringify(user));
     } catch (error) {
       console.error('Erro ao decodificar token:', error);

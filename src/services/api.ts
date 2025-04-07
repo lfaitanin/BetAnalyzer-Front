@@ -25,6 +25,7 @@ export interface BetHistoryFilters {
 export interface BetHistory {
   id: string;
   date: string;
+  createdAt: string;
   playerName: string;
   team: string;
   categoria: string;
@@ -53,6 +54,33 @@ export interface LiveBet {
   stake: number;
   potentialProfit: number;
   status: 'Meta Alcançada' | 'Meta Não Alcançada' | 'Meta Alcançada' | 'Risco' | 'Muito Provável' | 'Provável' | 'Possível' | 'Improvável'; 
+}
+
+export interface Bet {
+  id: string;
+  userId: string;
+  gameId: string;
+  gameDate: string;
+  homeTeam: string;
+  awayTeam: string;
+  betType: string;
+  betValue: string;
+  stake: number;
+  odds: number;
+  result: 'win' | 'loss' | 'pending';
+  createdAt: string;
+}
+
+export interface BetHistoryResponse {
+  bets: BetHistory[];
+  total: number;
+  successRate: number;
+  totalProfit: number;
+}
+
+export interface UpdatePasswordData {
+  currentPassword: string;
+  newPassword: string;
 }
 
 export async function getDashboardData(startDate?: string, endDate?: string): Promise<DashboardData> {
@@ -103,4 +131,35 @@ export async function getLiveBets(): Promise<LiveBet[]> {
     console.error('Erro ao carregar apostas em tempo real:', error);
     throw error;
   }
-} 
+}
+
+export const api = {
+  async getUserBets(userId: string): Promise<BetHistoryResponse> {
+    const response = await fetch(`${API_URL}/bets/history?userId=${userId}`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Falha ao carregar histórico de apostas');
+    }
+
+    return response.json();
+  },
+
+  async updatePassword(data: UpdatePasswordData): Promise<void> {
+    const response = await fetch(`${API_URL}/api/Account/change-password`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
+      body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+      throw new Error('Falha ao alterar senha');
+    }
+  },
+}; 

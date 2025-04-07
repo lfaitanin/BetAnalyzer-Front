@@ -13,6 +13,11 @@ const menuItems = [
     icon: 'home'
   },
   {
+    title: 'Minhas Apostas',
+    path: '/apostas/minhas-apostas',
+    icon: 'person'
+  },
+  {
     title: 'Pontos',
     path: '/apostas/pontos',
     icon: 'sports_basketball'
@@ -42,11 +47,11 @@ const menuItems = [
     path: '/apostas/relatorio',
     icon: 'bar_chart'
   },
-  // {
-  //   title: 'Live',
-  //   path: '/apostas/tempo-real',
-  //   icon: 'streetview'
-  // }
+  {
+    title: 'Perfil',
+    path: '/apostas/perfil',
+    icon: 'account_circle'
+  }
 ];
 
 export function Sidebar() {
