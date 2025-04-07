@@ -1,36 +1,76 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Basketball Betting Dashboard
 
-## Getting Started
+Dashboard para acompanhamento de apostas de basquete.
 
-First, run the development server:
+## Funcionalidades
+
+- Visualização de apostas por categoria
+- Análise de apostas por jogador
+- Ranking geral de jogadores
+- Relatórios detalhados
+- Suporte a PWA para uso em dispositivos móveis
+
+## Instalação
 
 ```bash
+# Clone o repositório
+git clone https://github.com/seu-usuario/basketball-betting-dashboard.git
+
+# Entre no diretório
+cd basketball-betting-dashboard
+
+# Instale as dependências
+npm install
+
+# Prepare os ícones para o PWA
+npm run prepare-pwa
+
+# Inicie o servidor de desenvolvimento
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Uso como PWA
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+O aplicativo pode ser instalado como um Progressive Web App (PWA) em dispositivos móveis e desktop:
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+1. Acesse o aplicativo em um navegador compatível (Chrome, Edge, Safari)
+2. Um prompt de instalação aparecerá automaticamente ou você pode usar o menu do navegador para instalar
+3. O aplicativo será instalado e poderá ser acessado como um aplicativo nativo
 
-## Learn More
+### Benefícios do PWA
 
-To learn more about Next.js, take a look at the following resources:
+- Acesso offline a funcionalidades básicas
+- Experiência de aplicativo nativo
+- Notificações push (quando implementadas)
+- Atualizações automáticas
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+## Tecnologias utilizadas
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+- Next.js
+- React
+- TypeScript
+- Tailwind CSS
+- Chart.js
+- PWA
 
-## Deploy on Vercel
+## Estrutura do projeto
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+```
+basketball-betting-dashboard/
+├── public/              # Arquivos estáticos
+│   ├── icons/           # Ícones do PWA
+│   ├── manifest.json    # Manifesto do PWA
+│   ├── service-worker.js # Service Worker para funcionalidades offline
+│   └── sw-register.js   # Script para registrar o Service Worker
+├── src/
+│   ├── app/             # Páginas da aplicação
+│   ├── components/      # Componentes React
+│   └── services/        # Serviços e APIs
+└── scripts/             # Scripts utilitários
+    ├── generate-icons.js # Gera ícones para o PWA
+    └── svg-to-png.js    # Converte SVG para PNG
+```
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Licença
+
+MIT

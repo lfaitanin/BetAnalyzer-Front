@@ -5,7 +5,10 @@
   "scripts": {
     "dev": "next dev --turbopack",
     "build": "next build",
-    "start": "next start"
+    "start": "next start",
+    "generate-icons": "node scripts/generate-icons.js",
+    "svg-to-png": "node scripts/svg-to-png.js",
+    "prepare-pwa": "npm run svg-to-png && npm run generate-icons"
   },
   "dependencies": {
     "chart.js": "^4.4.8",
@@ -24,6 +27,7 @@
     "eslint": "^9",
     "eslint-config-next": "15.2.4",
     "postcss": "^8.5.3",
+    "sharp": "^0.33.5",
     "tailwindcss": "^4.1.0",
     "typescript": "^5"
   }

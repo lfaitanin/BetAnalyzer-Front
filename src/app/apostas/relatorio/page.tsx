@@ -160,23 +160,23 @@ export default function RelatorioPage() {
   });
 
   return (
-    <div className="space-y-6 p-6 bg-gray-50">
-      <h1 className="text-2xl font-bold text-gray-900">Relatório de Apostas de Basquete</h1>
-      <div className="flex space-x-4 mb-4">
+    <div className="space-y-4 md:space-y-6 p-2 md:p-6 bg-gray-50">
+      <h1 className="text-xl md:text-2xl font-bold text-gray-900">Relatório de Apostas de Basquete</h1>
+      <div className="flex flex-wrap gap-2 mb-4">
         <button
-          className={`px-4 py-2 rounded ${reportType === 'categoria' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+          className={`px-3 md:px-4 py-2 rounded text-sm ${reportType === 'categoria' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
           onClick={() => setReportType('categoria')}
         >
           Por Categoria
         </button>
         <button
-          className={`px-4 py-2 rounded ${reportType === 'jogador' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+          className={`px-3 md:px-4 py-2 rounded text-sm ${reportType === 'jogador' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
           onClick={() => setReportType('jogador')}
         >
           Por Jogador
         </button>
         <button
-          className={`px-4 py-2 rounded ${reportType === 'ranking' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+          className={`px-3 md:px-4 py-2 rounded text-sm ${reportType === 'ranking' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
           onClick={() => setReportType('ranking')}
         >
           Ranking Geral
@@ -201,31 +201,31 @@ export default function RelatorioPage() {
                 <thead className="bg-gray-50">
                   <tr>
                     <th 
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                      className="px-3 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                       onClick={() => handleSort('categoria')}
                     >
                       Categoria {getSortIcon('categoria')}
                     </th>
                     <th 
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                      className="px-3 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                       onClick={() => handleSort('total')}
                     >
                       Total de Apostas {getSortIcon('total')}
                     </th>
                     <th 
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                      className="px-3 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                       onClick={() => handleSort('stakeTotal')}
                     >
                       Stake Total {getSortIcon('stakeTotal')}
                     </th>
                     <th 
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                      className="px-3 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                       onClick={() => handleSort('profitTotal')}
                     >
                       Lucro Total {getSortIcon('profitTotal')}
                     </th>
                     <th 
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                      className="px-3 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                       onClick={() => handleSort('wins')}
                     >
                       Taxa de Sucesso {getSortIcon('wins')}
@@ -237,13 +237,13 @@ export default function RelatorioPage() {
                     const successRate = item.total > 0 ? ((item.wins / item.total) * 100).toFixed(2) + '%' : '0%';
                     return (
                       <tr key={index} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{item.categoria}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{item.total}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">R$ {item.stakeTotal.toFixed(2)}</td>
-                        <td className={`px-6 py-4 whitespace-nowrap text-sm ${item.profitTotal >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                        <td className="px-3 md:px-6 py-2 md:py-4 whitespace-nowrap text-xs md:text-sm text-gray-900">{item.categoria}</td>
+                        <td className="px-3 md:px-6 py-2 md:py-4 whitespace-nowrap text-xs md:text-sm text-gray-900">{item.total}</td>
+                        <td className="px-3 md:px-6 py-2 md:py-4 whitespace-nowrap text-xs md:text-sm text-gray-900">R$ {item.stakeTotal.toFixed(2)}</td>
+                        <td className={`px-3 md:px-6 py-2 md:py-4 whitespace-nowrap text-xs md:text-sm ${item.profitTotal >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                           R$ {item.profitTotal.toFixed(2)}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{successRate}</td>
+                        <td className="px-3 md:px-6 py-2 md:py-4 whitespace-nowrap text-xs md:text-sm text-gray-900">{successRate}</td>
                       </tr>
                     );
                   })}
@@ -255,37 +255,37 @@ export default function RelatorioPage() {
                 <thead className="bg-gray-50">
                   <tr>
                     <th 
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                      className="px-3 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                       onClick={() => handleSort('jogador')}
                     >
                       Jogador {getSortIcon('jogador')}
                     </th>
                     <th 
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                      className="px-3 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                       onClick={() => handleSort('categoria')}
                     >
                       Categoria {getSortIcon('categoria')}
                     </th>
                     <th 
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                      className="px-3 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                       onClick={() => handleSort('total')}
                     >
                       Total de Apostas {getSortIcon('total')}
                     </th>
                     <th 
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                      className="px-3 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                       onClick={() => handleSort('stakeTotal')}
                     >
                       Stake Total {getSortIcon('stakeTotal')}
                     </th>
                     <th 
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                      className="px-3 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                       onClick={() => handleSort('profitTotal')}
                     >
                       Lucro Total {getSortIcon('profitTotal')}
                     </th>
                     <th 
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                      className="px-3 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                       onClick={() => handleSort('wins')}
                     >
                       Taxa de Sucesso {getSortIcon('wins')}
@@ -297,14 +297,14 @@ export default function RelatorioPage() {
                     const successRate = item.total > 0 ? ((item.wins / item.total) * 100).toFixed(2) + '%' : '0%';
                     return (
                       <tr key={index} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{item.jogador}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{item.categoria}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{item.total}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">R$ {item.stakeTotal.toFixed(2)}</td>
-                        <td className={`px-6 py-4 whitespace-nowrap text-sm ${item.profitTotal >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                        <td className="px-3 md:px-6 py-2 md:py-4 whitespace-nowrap text-xs md:text-sm text-gray-900">{item.jogador}</td>
+                        <td className="px-3 md:px-6 py-2 md:py-4 whitespace-nowrap text-xs md:text-sm text-gray-900">{item.categoria}</td>
+                        <td className="px-3 md:px-6 py-2 md:py-4 whitespace-nowrap text-xs md:text-sm text-gray-900">{item.total}</td>
+                        <td className="px-3 md:px-6 py-2 md:py-4 whitespace-nowrap text-xs md:text-sm text-gray-900">R$ {item.stakeTotal.toFixed(2)}</td>
+                        <td className={`px-3 md:px-6 py-2 md:py-4 whitespace-nowrap text-xs md:text-sm ${item.profitTotal >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                           R$ {item.profitTotal.toFixed(2)}
                         </td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{successRate}</td>
+                        <td className="px-3 md:px-6 py-2 md:py-4 whitespace-nowrap text-xs md:text-sm text-gray-900">{successRate}</td>
                       </tr>
                     );
                   })}
@@ -316,34 +316,34 @@ export default function RelatorioPage() {
                 <thead className="bg-gray-50">
                   <tr>
                     <th 
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                      className="px-3 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                       onClick={() => handleSort('jogador')}
                     >
                       Jogador {getSortIcon('jogador')}
                     </th>
                     <th 
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                      className="px-3 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                       onClick={() => handleSort('total')}
                     >
-                      Total de Apostas {getSortIcon('total')}
+                      Total {getSortIcon('total')}
                     </th>
                     <th 
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                      className="px-3 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                       onClick={() => handleSort('wins')}
                     >
                       Acertos {getSortIcon('wins')}
                     </th>
                     <th 
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                      className="px-3 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                       onClick={() => handleSort('wins')}
                     >
-                      Taxa de Sucesso {getSortIcon('wins')}
+                      Sucesso {getSortIcon('wins')}
                     </th>
                     <th 
-                      className="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
+                      className="px-3 md:px-6 py-2 md:py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider cursor-pointer hover:bg-gray-100"
                       onClick={() => handleSort('profitTotal')}
                     >
-                      Lucro Total {getSortIcon('profitTotal')}
+                      Lucro {getSortIcon('profitTotal')}
                     </th>
                   </tr>
                 </thead>
@@ -352,11 +352,11 @@ export default function RelatorioPage() {
                     const successRate = item.total > 0 ? ((item.wins / item.total) * 100).toFixed(2) + '%' : '0%';
                     return (
                       <tr key={index} className="hover:bg-gray-50">
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{item.jogador}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{item.total}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{item.wins}</td>
-                        <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{successRate}</td>
-                        <td className={`px-6 py-4 whitespace-nowrap text-sm ${item.profitTotal >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+                        <td className="px-3 md:px-6 py-2 md:py-4 whitespace-nowrap text-xs md:text-sm text-gray-900">{item.jogador}</td>
+                        <td className="px-3 md:px-6 py-2 md:py-4 whitespace-nowrap text-xs md:text-sm text-gray-900">{item.total}</td>
+                        <td className="px-3 md:px-6 py-2 md:py-4 whitespace-nowrap text-xs md:text-sm text-gray-900">{item.wins}</td>
+                        <td className="px-3 md:px-6 py-2 md:py-4 whitespace-nowrap text-xs md:text-sm text-gray-900">{successRate}</td>
+                        <td className={`px-3 md:px-6 py-2 md:py-4 whitespace-nowrap text-xs md:text-sm ${item.profitTotal >= 0 ? 'text-green-600' : 'text-red-600'}`}>
                           R$ {item.profitTotal.toFixed(2)}
                         </td>
                       </tr>

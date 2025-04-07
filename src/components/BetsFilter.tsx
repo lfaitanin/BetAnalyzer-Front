@@ -53,8 +53,8 @@ export default function BetsFilter({ onFilterChange, suggestions = [] }: BetsFil
   };
 
   return (
-    <div className="bg-white p-4 rounded-lg shadow-md">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+    <div className="bg-white p-2 md:p-4 rounded-lg shadow-md">
+      <div className="grid grid-cols-1 md:grid-cols-4 gap-2 md:gap-4">
         <div ref={searchRef} className="relative">
           <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-1">
             Pesquisar
@@ -69,7 +69,7 @@ export default function BetsFilter({ onFilterChange, suggestions = [] }: BetsFil
             }}
             onFocus={() => setShowSuggestions(true)}
             placeholder="Nome do jogador ou do Time..."
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 placeholder-gray-500"
+            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 placeholder-gray-500"
           />
           {showSuggestions && filteredSuggestions.length > 0 && (
             <div className="absolute z-10 w-full mt-1 bg-white rounded-md shadow-lg max-h-60 overflow-auto">
@@ -94,7 +94,7 @@ export default function BetsFilter({ onFilterChange, suggestions = [] }: BetsFil
             id="startDate"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
           />
         </div>
         <div>
@@ -106,14 +106,15 @@ export default function BetsFilter({ onFilterChange, suggestions = [] }: BetsFil
             id="endDate"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
-            className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
           />
         </div>
         <div className="flex items-end">
           <button
             onClick={handleSearch}
-            className="w-full px-4 py-2 bg-blue-600 text-white rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
+            className="w-full px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 flex items-center justify-center"
           >
+            <span className="material-icons text-base mr-1">search</span>
             Pesquisar
           </button>
         </div>

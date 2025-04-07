@@ -109,8 +109,8 @@ export default function DashboardPage() {
   };
 
   return (
-    <div className="space-y-6 p-6 bg-gray-50">
-      <h1 className="text-2xl font-bold text-gray-900">Dashboard</h1>
+    <div className="space-y-4 md:space-y-6 p-2 md:p-6 bg-gray-50">
+      <h1 className="text-xl md:text-2xl font-bold text-gray-900">Dashboard</h1>
       
       <DateRangeFilter 
         onFilterChange={handleDateChange} 
@@ -118,42 +118,42 @@ export default function DashboardPage() {
         endDate={endDate}
       />
       
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6">
-        <div className="bg-white p-6 rounded-lg shadow-md">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-4 md:gap-6">
+        <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
           <h3 className="text-sm font-medium text-gray-500">Lucro Mensal</h3>
-          <p className={`mt-2 text-3xl font-semibold ${
+          <p className={`mt-2 text-2xl md:text-3xl font-semibold ${
             data.monthlyProfit >= 0 ? 'text-green-600' : 'text-red-600'
           }`}>
             R$ {data.monthlyProfit.toFixed(2)}
           </p>
         </div>
 
-        <div className="bg-white p-6 rounded-lg shadow-md">
+        <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
           <h3 className="text-sm font-medium text-gray-500">Lucro Total</h3>
-          <p className={`mt-2 text-3xl font-semibold ${
+          <p className={`mt-2 text-2xl md:text-3xl font-semibold ${
             data.totalProfit >= 0 ? 'text-green-600' : 'text-red-600'
           }`}>
             R$ {data.totalProfit.toFixed(2)}
           </p>
         </div>
         
-        <div className="bg-white p-6 rounded-lg shadow-md">
+        <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
           <h3 className="text-sm font-medium text-gray-500">Taxa de Acerto</h3>
-          <p className="mt-2 text-3xl font-semibold text-gray-900">
+          <p className="mt-2 text-2xl md:text-3xl font-semibold text-gray-900">
             {data.successRate.toFixed(2)}%
           </p>
         </div>
         
-        <div className="bg-white p-6 rounded-lg shadow-md">
+        <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
           <h3 className="text-sm font-medium text-gray-500">Total de Apostas</h3>
-          <p className="mt-2 text-3xl font-semibold text-gray-900">
+          <p className="mt-2 text-2xl md:text-3xl font-semibold text-gray-900">
             {data.totalBets}
           </p>
         </div>
         
-        <div className="bg-white p-6 rounded-lg shadow-md">
+        <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
           <h3 className="text-sm font-medium text-gray-500">ROI</h3>
-          <p className={`mt-2 text-3xl font-semibold ${
+          <p className={`mt-2 text-2xl md:text-3xl font-semibold ${
             data.roi >= 0 ? 'text-green-600' : 'text-red-600'
           }`}>
             {data.roi.toFixed(2)}%
@@ -161,7 +161,7 @@ export default function DashboardPage() {
         </div>
       </div>
 
-      <div className="bg-white p-6 rounded-lg shadow-md">
+      <div className="bg-white p-4 md:p-6 rounded-lg shadow-md">
         <Line data={chartData} options={chartOptions} />
       </div>
     </div>

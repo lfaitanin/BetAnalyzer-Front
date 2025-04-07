@@ -3,6 +3,7 @@
 // src/components/Sidebar.tsx
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useState } from 'react';
 
 const menuItems = [
   {
@@ -49,29 +50,68 @@ const menuItems = [
 
 export function Sidebar() {
   const pathname = usePathname();
+  const [isExpanded, setIsExpanded] = useState(false);
 
   return (
-    <aside className="w-64 bg-gray-900 min-h-screen p-4">
-      <div className="text-white text-xl font-bold mb-8 px-4">BOT NBA</div>
-      <nav className="space-y-2">
-        {menuItems.map((item) => {
-          const isActive = pathname === item.path;
-          return (
-            <Link
-              key={item.path}
-              href={item.path}
-              className={`flex items-center text-sm px-4 py-3 rounded-lg transition-colors ${
-                isActive 
-                  ? 'bg-gray-800 text-white' 
-                  : 'text-gray-400 hover:text-white hover:bg-gray-800'
-              }`}
-            >
-              <span className="material-icons text-xl mr-3">{item.icon}</span>
-              {item.title}
-            </Link>
-          );
-        })}
-      </nav>
-    </aside>
+    <>
+      {/* Overlay para dispositivos móveis */}
+      {isExpanded && (
+        <div 
+          className="fixed inset-0 bg-black bg-opacity-50 z-40 md:hidden"
+          onClick={() => setIsExpanded(false)}
+        />
+      )}
+
+      {/* Botão de toggle para dispositivos móveis */}
+      <button
+        onClick={() => setIsExpanded(!isExpanded)}
+        className="fixed top-4 left-4 z-50 md:hidden bg-white text-gray-900 p-2 rounded-lg shadow-lg"
+      >
+        <span className="material-icons">
+          {isExpanded ? 'close' : 'menu'}
+        </span>
+      </button>
+
+      {/* Sidebar */}
+      <aside 
+        className={`
+          fixed md:static top-0 left-0 h-full z-50 
+          transition-transform duration-300 ease-in-out
+          ${isExpanded ? 'translate-x-0' : '-translate-x-full md:translate-x-0'}
+          w-64 bg-white min-h-screen p-4 shadow-lg
+        `}
+      >
+        <div className="flex items-center justify-between text-gray-900 mb-8 px-4">
+          <div className="text-xl font-bold">BOT NBA</div>
+          <button
+            onClick={() => setIsExpanded(false)}
+            className="md:hidden text-gray-500 hover:text-gray-900"
+          >
+            <span className="material-icons">close</span>
+          </button>
+        </div>
+
+        <nav className="space-y-2">
+          {menuItems.map((item) => {
+            const isActive = pathname === item.path;
+            return (
+              <Link
+                key={item.path}
+                href={item.path}
+                onClick={() => setIsExpanded(false)}
+                className={`flex items-center text-sm px-4 py-3 rounded-lg transition-colors ${
+                  isActive 
+                    ? 'bg-blue-50 text-blue-600' 
+                    : 'text-gray-600 hover:text-gray-900 hover:bg-gray-50'
+                }`}
+              >
+                <span className="material-icons text-xl mr-3">{item.icon}</span>
+                {item.title}
+              </Link>
+            );
+          })}
+        </nav>
+      </aside>
+    </>
   );
 }
