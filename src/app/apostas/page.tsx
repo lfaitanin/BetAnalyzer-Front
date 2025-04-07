@@ -45,7 +45,7 @@ export default function DashboardPage() {
       setData(dashboardData);
       setError(null);
     } catch (err) {
-      setError('Erro ao carregar dados do dashboard');
+      setError('Erro ao carregar dados do dashboard!');
       console.error(err);
     } finally {
       setLoading(false);
