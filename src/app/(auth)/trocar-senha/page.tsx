@@ -1,10 +1,10 @@
 'use client';
 
-import { useState } from 'react';
+import { useState, Suspense } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
 import { useAuth } from '@/contexts/AuthContext';
 
-export default function TrocarSenhaPage() {
+function TrocarSenhaForm() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const token = searchParams?.get('token');
@@ -34,8 +34,9 @@ export default function TrocarSenhaPage() {
     try {
       await resetPassword(token, password);
       router.push('/login?message=Senha alterada com sucesso');
-    } catch (err: any) {
-      setError(err.message || 'Erro ao alterar senha');
+    } catch (err) {
+      setError('Erro ao carregar relatório');
+      console.error(err);
     } finally {
       setIsLoading(false);
     }
@@ -150,5 +151,17 @@ export default function TrocarSenhaPage() {
         </form>
       </div>
     </div>
+  );
+}
+
+export default function TrocarSenhaPage() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen flex items-center justify-center bg-gray-100">
+        <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-blue-600"></div>
+      </div>
+    }>
+      <TrocarSenhaForm />
+    </Suspense>
   );
 } 
