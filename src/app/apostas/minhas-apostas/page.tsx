@@ -3,13 +3,31 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'react-hot-toast';
-import { BetHistory, api } from '@/services/api';
+import { BetHistory as BaseBetHistory, api } from '@/services/api';
+
+type BetStatus = 'win' | 'loss' | 'pending';
+type ApiStatus = 'Ganhou' | 'Perdeu' | 'Pendente';
+
+interface BetHistory extends Omit<BaseBetHistory, 'status'> {
+  status: BetStatus;
+}
+
+const mapApiStatus = (status: ApiStatus): BetStatus => {
+  switch (status) {
+    case 'Ganhou':
+      return 'win';
+    case 'Perdeu':
+      return 'loss';
+    case 'Pendente':
+      return 'pending';
+  }
+};
 
 export default function MinhasApostasPage() {
   const { user } = useAuth();
   const [bets, setBets] = useState<BetHistory[]>([]);
   const [isLoading, setIsLoading] = useState(true);
-  const [filter, setFilter] = useState<'Ganhou' | 'Perdeu' | 'Pendente'>('Pendente');
+  const [filter, setFilter] = useState<BetStatus>('pending');
   const [dateRange, setDateRange] = useState({
     startDate: '',
     endDate: ''
@@ -27,7 +45,11 @@ export default function MinhasApostasPage() {
       try {
         setIsLoading(true);
         const response = await api.getUserBets(user.id);
-        setBets(response.bets);
+        const mappedBets: BetHistory[] = response.bets.map(bet => ({
+          ...bet,
+          status: mapApiStatus(bet.status as ApiStatus)
+        }));
+        setBets(mappedBets);
         setStats({
           total: response.total,
           successRate: response.successRate,
@@ -46,7 +68,7 @@ export default function MinhasApostasPage() {
 
   const filteredBets = bets.filter(bet => {
     // Filtrar por resultado
-    if (filter !== 'Pendente' && bet.status !== filter) {
+    if (filter !== bet.status) {
       return false;
     }
 
@@ -65,7 +87,7 @@ export default function MinhasApostasPage() {
     return true;
   });
 
-  const getResultColor = (result: string) => {
+  const getResultColor = (result: BetStatus) => {
     switch (result) {
       case 'win':
         return 'text-green-600';
@@ -76,13 +98,13 @@ export default function MinhasApostasPage() {
     }
   };
 
-  const getResultText = (result: string) => {
+  const getResultText = (result: BetStatus): string => {
     switch (result) {
       case 'win':
         return 'Ganhou';
       case 'loss':
         return 'Perdeu';
-      default:
+      case 'pending':
         return 'Pendente';
     }
   };
@@ -107,47 +129,46 @@ export default function MinhasApostasPage() {
   }
 
   return (
-    <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6">Minhas Apostas</h1>
+    <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
+      <h1 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Minhas Apostas</h1>
 
       {/* Estatísticas */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
-        <div className="bg-white p-4 rounded-lg shadow">
-          <h3 className="text-sm text-gray-500">Total de Apostas</h3>
-          <p className="text-2xl font-bold">{stats.total}</p>
+      <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6">
+        <div className="bg-white p-3 sm:p-4 rounded-lg shadow">
+          <h3 className="text-xs sm:text-sm text-gray-500">Total de Apostas</h3>
+          <p className="text-lg sm:text-2xl font-bold">{stats.total}</p>
         </div>
-        <div className="bg-white p-4 rounded-lg shadow">
-          <h3 className="text-sm text-gray-500">Taxa de Acerto</h3>
-          <p className="text-2xl font-bold">{stats.successRate.toFixed(1)}%</p>
+        <div className="bg-white p-3 sm:p-4 rounded-lg shadow">
+          <h3 className="text-xs sm:text-sm text-gray-500">Taxa de Acerto</h3>
+          <p className="text-lg sm:text-2xl font-bold">{stats.successRate.toFixed(1)}%</p>
         </div>
-        <div className="bg-white p-4 rounded-lg shadow">
-          <h3 className="text-sm text-gray-500">Lucro Total</h3>
-          <p className={`text-2xl font-bold ${stats.totalProfit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+        <div className="bg-white p-3 sm:p-4 rounded-lg shadow">
+          <h3 className="text-xs sm:text-sm text-gray-500">Lucro Total</h3>
+          <p className={`text-lg sm:text-2xl font-bold ${stats.totalProfit >= 0 ? 'text-green-600' : 'text-red-600'}`}>
             {formatCurrency(stats.totalProfit)}
           </p>
         </div>
       </div>
 
       {/* Filtros */}
-      <div className="bg-white p-4 rounded-lg shadow mb-6">
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+      <div className="bg-white p-3 sm:p-4 rounded-lg shadow mb-4 sm:mb-6">
+        <div className="grid grid-cols-1 gap-3 sm:gap-4">
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
               Filtrar por Resultado
             </label>
             <select
               value={filter}
-              onChange={(e) => setFilter(e.target.value as any)}
-              className="w-full px-3 py-2 border border-gray-300 rounded-md"
+              onChange={(e) => setFilter(e.target.value as BetStatus)}
+              className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md"
             >
-              <option value="all">Todas</option>
+              <option value="pending">Pendentes</option>
               <option value="win">Ganhas</option>
               <option value="loss">Perdidas</option>
-              <option value="pending">Pendentes</option>
             </select>
           </div>
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
               Filtrar por Data
             </label>
             <div className="grid grid-cols-2 gap-2">
@@ -155,21 +176,57 @@ export default function MinhasApostasPage() {
                 type="date"
                 value={dateRange.startDate}
                 onChange={(e) => setDateRange(prev => ({ ...prev, startDate: e.target.value }))}
-                className="px-3 py-2 border border-gray-300 rounded-md"
+                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md"
               />
               <input
                 type="date"
                 value={dateRange.endDate}
                 onChange={(e) => setDateRange(prev => ({ ...prev, endDate: e.target.value }))}
-                className="px-3 py-2 border border-gray-300 rounded-md"
+                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md"
               />
             </div>
           </div>
         </div>
       </div>
 
-      {/* Lista de Apostas */}
-      <div className="bg-white rounded-lg shadow overflow-hidden">
+      {/* Lista de Apostas - Versão Mobile (Cards) */}
+      <div className="block sm:hidden space-y-3">
+        {filteredBets.map((bet) => (
+          <div key={bet.id} className="bg-white rounded-lg shadow p-4">
+            <div className="flex justify-between items-start mb-2">
+              <div className="text-sm font-medium text-gray-900">{bet.team}</div>
+              <span className={`px-2 py-1 text-xs leading-4 font-semibold rounded-full ${getResultColor(bet.status)}`}>
+                {getResultText(bet.status)}
+              </span>
+            </div>
+            <div className="grid grid-cols-2 gap-2 text-xs">
+              <div>
+                <p className="text-gray-500">Data</p>
+                <p className="font-medium">{formatDate(bet.date)}</p>
+              </div>
+              <div>
+                <p className="text-gray-500">Tipo</p>
+                <p className="font-medium">{bet.categoria}</p>
+              </div>
+              <div>
+                <p className="text-gray-500">Valor</p>
+                <p className="font-medium">{bet.target}</p>
+              </div>
+              <div>
+                <p className="text-gray-500">Stake</p>
+                <p className="font-medium">{formatCurrency(bet.stake)}</p>
+              </div>
+              <div>
+                <p className="text-gray-500">Odds</p>
+                <p className="font-medium">{bet.odds}</p>
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+
+      {/* Lista de Apostas - Versão Desktop (Tabela) */}
+      <div className="hidden sm:block bg-white rounded-lg shadow overflow-hidden">
         <div className="overflow-x-auto">
           <table className="min-w-full divide-y divide-gray-200">
             <thead className="bg-gray-50">
