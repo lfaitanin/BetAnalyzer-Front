@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { getLiveBets, LiveBet } from '@/services/api';
+import { LiveBet } from '@/services/api';
 
 export default function TempoRealPage() {
   const [bets, setBets] = useState<LiveBet[]>([]);
@@ -11,8 +11,7 @@ export default function TempoRealPage() {
   const loadBets = async () => {
     try {
       setLoading(true);
-      const liveBets = await getLiveBets();
-      setBets(liveBets);
+    
       setError(null);
     } catch (err) {
       setError('Erro ao carregar apostas em tempo real');
@@ -70,7 +69,7 @@ export default function TempoRealPage() {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {bets.map((bet) => (
-              <tr key={bet.id} className="hover:bg-gray-50">
+              <tr key={bet.betId} className="hover:bg-gray-50">
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bet.date}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bet.playerName}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bet.team}</td>
@@ -82,7 +81,7 @@ export default function TempoRealPage() {
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bet.requiredPacePerMinute.toFixed(2)}</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bet.completionPercentage.toFixed(1)}%</td>
                 <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">{bet.odds}</td>
-                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">R$ {bet.stake.toFixed(2)}</td>
+                <td className="px-6 py-4 whitespace-nowrap text-sm text-gray-900">R$ {bet.stake?.toFixed(2)}</td>
                 <td className={`px-6 py-4 whitespace-nowrap text-sm ${
                   bet.potentialProfit >= 0 ? 'text-green-600' : 'text-red-600'
                 }`}>

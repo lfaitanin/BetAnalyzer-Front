@@ -39,10 +39,10 @@ export interface BetHistory {
 
 export interface LiveBet {
   game: string;
-  id: string;
-  date: string;
+  betId: string;
+  date?: string;
   playerName: string;
-  team: string;
+  team?: string;
   category: string;
   target: number;
   currentValue: number;
@@ -51,9 +51,10 @@ export interface LiveBet {
   requiredPacePerMinute: number;
   completionPercentage: number;
   odds: number;
-  stake: number;
+  stake?: number;
   potentialProfit: number;
-  status: 'Meta Alcançada' | 'Meta Não Alcançada' | 'Meta Alcançada' | 'Risco' | 'Muito Provável' | 'Provável' | 'Possível' | 'Improvável'; 
+  status: 'Meta Alcançada' | 'Meta Não Alcançada' | 'Meta Alcançada' | 'Risco' | 'Muito Provável' | 'Provável' | 'Possível' | 'Improvável';
+  check?: boolean;
 }
 
 export interface Bet {
@@ -81,6 +82,35 @@ export interface BetHistoryResponse {
 export interface UpdatePasswordData {
   currentPassword: string;
   newPassword: string;
+}
+
+export interface UserBetData {
+  userId: string;
+  betId: string;
+  betTitle: string;
+  odd: number;
+  stake: number;
+  meta: number;
+  date: string;
+  status: 'win' | 'loss' | 'pending';
+}
+
+export interface UserBet {
+  id: string;
+  userId: string;
+  betId: string;
+  betTitle: string;
+  odd: number;
+  stake: number;
+  meta: number;
+  createdAt: string;
+  status: 'win' | 'loss' | 'pending';
+}
+
+export interface UserReport {
+  percAcerto: number;
+  totalProfit: number;
+  totalUnits: number;
 }
 
 export async function getDashboardData(startDate?: string, endDate?: string): Promise<DashboardData> {
@@ -120,10 +150,12 @@ export async function getBetHistory(filters: BetHistoryFilters): Promise<BetHist
   }
 }
 
-export async function getLiveBets(): Promise<LiveBet[]> {
+export async function getLiveBets(userId?: string): Promise<LiveBet[]> {
   try {
-    const response = await fetch(`${API_URL}/api/BettingAnalysis/live`);
-      if (!response.ok) {
+    const url = `${API_URL}/api/BettingAnalysis/live?userId=${userId}`;
+      console.log(url);
+    const response = await fetch(url);
+    if (!response.ok) {
       throw new Error('Erro ao carregar apostas em tempo real');
     }
     return response.json();
@@ -135,14 +167,29 @@ export async function getLiveBets(): Promise<LiveBet[]> {
 
 export const api = {
   async getUserBets(userId: string): Promise<BetHistoryResponse> {
-    const response = await fetch(`${API_URL}/bets/history?userId=${userId}`, {
+    const response = await fetch(`${API_URL}/BettingAnalysis/history?userId=${userId}`, {
       headers: {
         'Authorization': `Bearer ${localStorage.getItem('token')}`
       }
     });
 
     if (!response.ok) {
-      throw new Error('Falha ao carregar histórico de apostas');
+      throw new Error('Erro ao buscar histórico de apostas');
+    }
+
+    const data = await response.json();
+    return data;
+  },
+
+  async getUserBetsByDateRange(userId: string, startDate: string, endDate: string): Promise<UserBetData[]> {
+    const response = await fetch(`${API_URL}/api/UserBets/minhas-bets?userId=${userId}&startDate=${startDate}&endDate=${endDate}`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Erro ao buscar apostas');
     }
 
     return response.json();
@@ -161,5 +208,39 @@ export const api = {
     if (!response.ok) {
       throw new Error('Falha ao alterar senha');
     }
+  },
+
+  addUserBet: async (data: UserBetData): Promise<any> => {
+    console.log('Sending bet data:', data);
+    const response = await fetch(`${API_URL}/api/UserBets`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      },
+      body: JSON.stringify(data)
+    });
+
+    if (!response.ok) {
+      const errorData = await response.json().catch(() => null);
+      console.error('Error response:', errorData);
+      throw new Error('Erro ao adicionar aposta');
+    }
+
+    return response.json();
+  },
+
+  async getUserStats(userId: string): Promise<UserReport> {
+    const response = await fetch(`${API_URL}/api/UserBets/meu-saldo?userId=${userId}`, {
+      headers: {
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
+      }
+    });
+
+    if (!response.ok) {
+      throw new Error('Erro ao buscar estatísticas');
+    }
+
+    return response.json();
   },
 }; 
