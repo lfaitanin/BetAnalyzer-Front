@@ -3,6 +3,12 @@ import "./globals.css";
 import PWAInstallPrompt from "@/components/PWAInstallPrompt";
 import Script from "next/script";
 import { AuthProvider } from "@/contexts/AuthContext";
+import { WebSocketProvider } from '@/contexts/WebSocketContext';
+import { Toaster } from 'react-hot-toast';
+import { Inter } from 'next/font/google';
+import { NotificationBell } from '@/components/NotificationBell';
+
+const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
   title: "BasketBet Pro",
@@ -43,10 +49,15 @@ export default function RootLayout({
         <meta name="apple-mobile-web-app-title" content="BasketBet Pro" />
         <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
       </head>
-      <body className="bg-gray-100">
-      <AuthProvider>
-
-        {children}
+      <body className={inter.className}>
+        <AuthProvider>
+          <WebSocketProvider>
+            <div className="fixed top-4 right-4 z-50">
+              <NotificationBell />
+            </div>
+            {children}
+            <Toaster />
+          </WebSocketProvider>
         </AuthProvider>
         <PWAInstallPrompt />
         <Script src="/sw-register.js" strategy="afterInteractive" />
