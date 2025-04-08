@@ -77,12 +77,12 @@ export default function PerfilPage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-2xl font-bold mb-6">Meu Perfil</h1>
+      <h1 className="text-2xl font-bold mb-6 text-gray-900">Meu Perfil</h1>
       
       <div className="bg-white rounded-lg shadow-md p-6">
         <form onSubmit={handleSubmit} className="space-y-6">
           <div>
-            <h2 className="text-lg font-medium mb-4">Informações Pessoais</h2>
+            <h2 className="text-lg font-medium mb-4 text-gray-800">Informações Pessoais</h2>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
               <div>
                 <label htmlFor="fullName" className="block text-sm font-medium text-gray-700 mb-1">
@@ -117,7 +117,7 @@ export default function PerfilPage() {
           </div>
 
           <div>
-            <h2 className="text-lg font-medium mb-4">Stake Padrão</h2>
+            <h2 className="text-lg font-medium mb-4 text-gray-800">Stake Padrão</h2>
             <div>
               <label htmlFor="balance" className="block text-sm font-medium text-gray-700 mb-1">
                 Saldo (R$)
@@ -139,7 +139,6 @@ export default function PerfilPage() {
           </div>
 
           <div>
-            <h2 className="text-lg font-medium mb-4">Stake Padrão</h2>
             <div>
               <label htmlFor="defaultStake" className="block text-sm font-medium text-gray-700 mb-1">
                 Valor da Stake (R$)
@@ -161,7 +160,7 @@ export default function PerfilPage() {
           </div>
           
           <div>
-            <h2 className="text-lg font-medium mb-4">Segurança</h2>
+            <h2 className="text-lg font-medium mb-4 text-gray-800">Segurança</h2>
             <button
               type="button"
               onClick={() => setIsPasswordModalOpen(true)}

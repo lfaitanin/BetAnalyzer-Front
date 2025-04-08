@@ -164,19 +164,19 @@ export default function RelatorioPage() {
       <h1 className="text-xl md:text-2xl font-bold text-gray-900">Relatório de Apostas de Basquete</h1>
       <div className="flex flex-wrap gap-2 mb-4">
         <button
-          className={`px-3 md:px-4 py-2 rounded text-sm ${reportType === 'categoria' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+          className={`px-3 md:px-4 py-2 rounded text-sm ${reportType === 'categoria' ? 'bg-blue-500 text-white' : 'bg-gray-400 text-white'}`}
           onClick={() => setReportType('categoria')}
         >
           Por Categoria
         </button>
         <button
-          className={`px-3 md:px-4 py-2 rounded text-sm ${reportType === 'jogador' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+          className={`px-3 md:px-4 py-2 rounded text-sm ${reportType === 'jogador' ? 'bg-blue-500 text-white' : 'bg-gray-400 text-white'}`}
           onClick={() => setReportType('jogador')}
         >
           Por Jogador
         </button>
         <button
-          className={`px-3 md:px-4 py-2 rounded text-sm ${reportType === 'ranking' ? 'bg-blue-500 text-white' : 'bg-gray-200'}`}
+          className={`px-3 md:px-4 py-2 rounded text-sm ${reportType === 'ranking' ? 'bg-blue-500 text-white' : 'bg-gray-400 text-white'}`}
           onClick={() => setReportType('ranking')}
         >
           Ranking Geral

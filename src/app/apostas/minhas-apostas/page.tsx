@@ -5,8 +5,6 @@ import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'react-hot-toast';
 import { api, UserBetData, UserReport } from '@/services/api';
 
-type BetStatus = 'Ganhou' | 'Perdeu' | 'Pendente';
-
 export default function MinhasApostasPage() {
   const { user } = useAuth();
   const [bets, setBets] = useState<UserBetData[]>([]);
@@ -20,7 +18,8 @@ export default function MinhasApostasPage() {
   const [stats, setStats] = useState<UserReport>({
     percAcerto: 0,
     totalProfit: 0,
-    totalUnits: 0
+    totalUnits: 0,
+    saldoTotal: 0
   });
 
   useEffect(() => {
@@ -100,10 +99,6 @@ export default function MinhasApostasPage() {
     }
   };
 
-  const getResultText = (status: BetStatus): string => {
-    return status;
-  };
-
   const formatDate = (dateString: string) => {
     return new Date(dateString).toLocaleDateString('pt-BR');
   };
@@ -125,13 +120,13 @@ export default function MinhasApostasPage() {
 
   return (
     <div className="container mx-auto px-2 sm:px-4 py-4 sm:py-8">
-      <h1 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6">Minhas Apostas</h1>
+      <h1 className="text-xl sm:text-2xl font-bold mb-4 sm:mb-6 text-gray-700">Minhas Apostas</h1>
 
       {/* Estatísticas */}
       <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4 mb-4 sm:mb-6">
         <div className="bg-white p-3 sm:p-4 rounded-lg shadow">
           <h3 className="text-xs sm:text-sm text-gray-500">Taxa de Acerto</h3>
-          <p className="text-lg sm:text-2xl font-bold">{stats.percAcerto.toFixed(1)}%</p>
+          <p className="text-lg sm:text-2xl font-bold text-gray-500">{stats.percAcerto.toFixed(1)}%</p>
         </div>
         <div className="bg-white p-2 sm:p-4 rounded-lg shadow">
           <h3 className="text-xs sm:text-sm text-gray-500">Lucro Total</h3>
@@ -141,7 +136,8 @@ export default function MinhasApostasPage() {
         </div>
         <div className="bg-white p-2 sm:p-4 rounded-lg shadow">
           <h3 className="text-xs sm:text-sm text-gray-500">Unidades</h3>
-          <p className="text-lg sm:text-2xl font-bold">{stats.totalUnits.toFixed(2)}</p>
+          <p className={`text-lg sm:text-2xl font-bold ${stats.totalUnits >= 0 ? 'text-green-600' : 'text-red-600'}`}>
+            {stats.totalUnits.toFixed(2)}</p>
         </div>
       </div>
 
@@ -149,13 +145,13 @@ export default function MinhasApostasPage() {
       <div className="bg-white p-3 sm:p-4 rounded-lg shadow mb-4 sm:mb-6">
         <div className="grid grid-cols-1 gap-3 sm:gap-4">
           <div>
-            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1">
+            <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-1 ">
               Filtrar por Resultado
             </label>
             <select
               value={filter}
               onChange={(e) => setFilter(e.target.value)}
-              className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md"
+              className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md text-gray-500"
             >
               <option value="Todos">Todos</option>
               <option value="Pendente">Pendentes</option>
@@ -172,13 +168,13 @@ export default function MinhasApostasPage() {
                 type="date"
                 value={dateRange.startDate}
                 onChange={(e) => setDateRange(prev => ({ ...prev, startDate: e.target.value }))}
-                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md"
+                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md text-gray-500"
               />
               <input
                 type="date"
                 value={dateRange.endDate}
                 onChange={(e) => setDateRange(prev => ({ ...prev, endDate: e.target.value }))}
-                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md"
+                className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md text-gray-500"
               />
             </div>
           </div>

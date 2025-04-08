@@ -115,6 +115,7 @@ export interface UserReport {
   percAcerto: number;
   totalProfit: number;
   totalUnits: number;
+  saldoTotal: number;
 }
 
 export async function getDashboardData(startDate?: string, endDate?: string): Promise<DashboardData> {
