@@ -134,7 +134,7 @@ export default function HomePage() {
               <ul className="space-y-4 mb-8">
                 <li className="flex items-center text-gray-700">
                   <CheckCircle2 className="w-5 h-5 text-green-500 mr-2" />
-                  <span>Acesso a nosso bot de Basquete.</span>
+                  <span>Acesso a nosso bot de Basquete</span>
                 </li>
                 <li className="flex items-center text-gray-700">
                   <CheckCircle2 className="w-5 h-5 text-green-500 mr-2" />
