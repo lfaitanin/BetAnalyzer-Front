@@ -5,27 +5,14 @@ import { useAuth } from '@/contexts/AuthContext';
 import { toast } from 'react-hot-toast';
 import { api, UserBetData, UserReport } from '@/services/api';
 
-type BetStatus = 'win' | 'loss' | 'pending';
-type ApiStatus = 'Ganhou' | 'Perdeu' | 'Pendente' | 'Aberta';
-
-const mapApiStatus = (status: ApiStatus): BetStatus => {
-  switch (status) {
-    case 'Ganhou':
-      return 'win';
-    case 'Perdeu':
-      return 'loss';
-    case 'Pendente':
-    case 'Aberta':
-      return 'pending';
-  }
-};
+type BetStatus = 'Ganhou' | 'Perdeu' | 'Pendente';
 
 export default function MinhasApostasPage() {
   const { user } = useAuth();
   const [bets, setBets] = useState<UserBetData[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [isSearching, setIsSearching] = useState(false);
-  const [filter, setFilter] = useState<BetStatus>('pending');
+  const [filter, setFilter] = useState<string>('Todos');
   const [dateRange, setDateRange] = useState({
     startDate: '',
     endDate: ''
@@ -42,23 +29,10 @@ export default function MinhasApostasPage() {
       
       try {
         setIsLoading(true);
-        const [betsResponse, statsResponse] = await Promise.all([
-          api.getUserBets(user.id),
+        const [statsResponse] = await Promise.all([
           api.getUserStats(user.id)
         ]);
 
-        const mappedBets: UserBetData[] = betsResponse.bets.map(bet => ({
-          userId: user.id,
-          betId: bet.id,
-          betTitle: bet.team,
-          odd: bet.odds,
-          stake: bet.stake,
-          meta: bet.target,
-          date: bet.date,
-          status: mapApiStatus(bet.status as ApiStatus)
-        }));
-
-        setBets(mappedBets);
         setStats(statsResponse);
       } catch (error) {
         console.error('Erro ao carregar dados:', error);
@@ -84,17 +58,13 @@ export default function MinhasApostasPage() {
 
     try {
       setIsSearching(true);
-      const bets = await api.getUserBetsByDateRange(user.id, dateRange.startDate, dateRange.endDate);
-      const mappedBets = bets.map(bet => ({
-        ...bet,
-        status: mapApiStatus(bet.status as ApiStatus)
-      }));
-      setBets(mappedBets);
-      
-      if (mappedBets.length === 0) {
+      const response = await api.getUserBetsByDateRange(user.id, dateRange.startDate, dateRange.endDate);
+      setBets(response);
+      console.log(bets);
+      if (response.length === 0) {
         toast.success('Nenhuma aposta encontrada para o período selecionado');
       } else {
-        toast.success(`${mappedBets.length} apostas encontradas`);
+        toast.success(`${response.length} apostas encontradas`);
       }
     } catch (error) {
       console.error('Erro ao buscar apostas:', error);
@@ -105,9 +75,7 @@ export default function MinhasApostasPage() {
   };
 
   const filteredBets = bets.filter(bet => {
-    if (filter !== bet.status) {
-      return false;
-    }
+    if (filter !== 'Todos' && filter !== bet.status) return false;
 
     if (dateRange.startDate && dateRange.endDate) {
       const betDate = new Date(bet.date);
@@ -115,34 +83,25 @@ export default function MinhasApostasPage() {
       const endDate = new Date(dateRange.endDate);
       endDate.setHours(23, 59, 59, 999);
 
-      if (betDate < startDate || betDate > endDate) {
-        return false;
-      }
+      return betDate >= startDate && betDate <= endDate;
     }
 
     return true;
   });
 
-  const getResultColor = (result: BetStatus) => {
-    switch (result) {
-      case 'win':
+  const getResultColor = (status: string) => {
+    switch (status) {
+      case 'Ganhou':
         return 'text-green-600';
-      case 'loss':
+      case 'Perdeu':
         return 'text-red-600';
       default:
         return 'text-yellow-600';
     }
   };
 
-  const getResultText = (result: BetStatus): string => {
-    switch (result) {
-      case 'win':
-        return 'Ganhou';
-      case 'loss':
-        return 'Perdeu';
-      case 'pending':
-        return 'Pendente';
-    }
+  const getResultText = (status: BetStatus): string => {
+    return status;
   };
 
   const formatDate = (dateString: string) => {
@@ -195,12 +154,13 @@ export default function MinhasApostasPage() {
             </label>
             <select
               value={filter}
-              onChange={(e) => setFilter(e.target.value as BetStatus)}
+              onChange={(e) => setFilter(e.target.value)}
               className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md"
             >
-              <option value="pending">Pendentes</option>
-              <option value="win">Ganhas</option>
-              <option value="loss">Perdidas</option>
+              <option value="Todos">Todos</option>
+              <option value="Pendente">Pendentes</option>
+              <option value="Ganhou">Ganhas</option>
+              <option value="Perdeu">Perdidas</option>
             </select>
           </div>
           <div>
@@ -252,11 +212,11 @@ export default function MinhasApostasPage() {
       {/* Lista de Apostas - Versão Mobile (Cards) */}
       <div className="block sm:hidden space-y-3">
         {filteredBets.map((bet) => (
-          <div key={bet.betId} className="bg-white rounded-lg shadow p-4">
+          <div key={bet.id} className="bg-white rounded-lg shadow p-4">
             <div className="flex justify-between items-start mb-2">
               <div className="text-sm font-medium text-gray-900">{bet.betTitle}</div>
               <span className={`px-2 py-1 text-xs leading-4 font-semibold rounded-full ${getResultColor(bet.status)}`}>
-                {getResultText(bet.status)}
+                {bet.status}
               </span>
             </div>
             <div className="grid grid-cols-2 gap-2 text-xs">
@@ -309,7 +269,7 @@ export default function MinhasApostasPage() {
             </thead>
             <tbody className="bg-white divide-y divide-gray-200">
               {filteredBets.map((bet) => (
-                <tr key={bet.betId}>
+                <tr key={bet.id}>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <div className="text-sm font-medium text-gray-900">
                       {bet.betTitle}
@@ -333,7 +293,7 @@ export default function MinhasApostasPage() {
                   </td>
                   <td className="px-6 py-4 whitespace-nowrap">
                     <span className={`px-2 inline-flex text-xs leading-5 font-semibold rounded-full ${getResultColor(bet.status)}`}>
-                      {getResultText(bet.status)}
+                      {bet.status}
                     </span>
                   </td>
                 </tr>

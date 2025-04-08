@@ -84,15 +84,19 @@ export interface UpdatePasswordData {
   newPassword: string;
 }
 
+type ApiStatus = 'Ganhou' | 'Perdeu' | 'Pendente';
+type BetStatus = 'win' | 'loss' | 'pending';
+
 export interface UserBetData {
+  id: string;
   userId: string;
   betId: string;
   betTitle: string;
+  date: string;
   odd: number;
   stake: number;
   meta: number;
-  date: string;
-  status: 'win' | 'loss' | 'pending';
+  status: string;
 }
 
 export interface UserBet {

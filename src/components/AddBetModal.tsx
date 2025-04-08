@@ -84,7 +84,8 @@ export default function AddBetModal({ isOpen, onClose, bet }: AddBetModalProps) 
         stake: formData.stake,
         meta: formData.meta,
         date: new Date().toISOString(),
-        status: 'pending'
+        status: 'Pendente',
+        id: ''
       });
 
       toast.success('Aposta adicionada com sucesso!');
