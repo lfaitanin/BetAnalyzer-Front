@@ -1,11 +1,5 @@
 'use client';
 
-import { useEffect, useState } from 'react';
-import { useAuth } from '@/contexts/AuthContext';
-import { useRouter } from 'next/navigation';
-import { DashboardData, getDashboardData } from '@/services/api';
-import { Line } from 'react-chartjs-2';
-import DateRangeFilter from '@/components/DateRangeFilter';
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -16,7 +10,6 @@ import {
   Tooltip,
   Legend
 } from 'chart.js';
-import Image from 'next/image';
 import Link from 'next/link';
 import { ArrowRight, CheckCircle2, TrendingUp, Shield, BarChart2 } from 'lucide-react';
 
@@ -76,7 +69,7 @@ export default function HomePage() {
             </p>
             <div className="flex justify-center space-x-6">
               <Link 
-                href="/register" 
+                href="/cadastro" 
                 className="bg-blue-600 text-white px-8 py-4 rounded-md text-lg font-semibold hover:bg-blue-700 flex items-center"
               >
                 Comece agora <ArrowRight className="ml-2" />
@@ -146,7 +139,7 @@ export default function HomePage() {
                 </li>
               </ul>
               <Link 
-                href="/register" 
+                href="/cadastro" 
                 className="block text-center bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700"
               >
                 Começar agora
@@ -177,7 +170,7 @@ export default function HomePage() {
                 </li>
               </ul>
               <Link 
-                href="/register" 
+                href="/cadastro" 
                 className="block text-center bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700"
               >
                 Começar agora
@@ -207,7 +200,7 @@ export default function HomePage() {
                 </li>
               </ul>
               <Link 
-                href="/register" 
+                href="/cadastro" 
                 className="block text-center bg-blue-600 text-white px-6 py-3 rounded-md hover:bg-blue-700"
               >
                 Começar agora
