@@ -4,7 +4,7 @@ Dashboard para acompanhamento de apostas de basquete.
 
 ## Funcionalidades
 
-- Visualização de apostas por categoria
+- Visualização de apostas por categoria.
 - Análise de apostas por jogador
 - Ranking geral de jogadores
 - Relatórios detalhados
