@@ -16,7 +16,7 @@ export default function BolasDe3Page() {
       setBets(history);
       setError(null);
     } catch (err) {
-      setError('Erro ao carregar histórico de apostas');
+      setError('Erro ao carregar histórico de apostas !');
       console.error(err);
     } finally {
       setLoading(false);
