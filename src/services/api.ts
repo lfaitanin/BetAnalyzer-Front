@@ -54,6 +54,7 @@ export interface LiveBet {
   stake?: number;
   potentialProfit: number;
   status: 'Meta Alcançada' | 'Meta Não Alcançada' | 'Meta Alcançada' | 'Risco' | 'Muito Provável' | 'Provável' | 'Possível' | 'Improvável';
+  BetType: 'Under' | 'Over';
   check?: boolean;
 }
 
@@ -83,10 +84,6 @@ export interface UpdatePasswordData {
   currentPassword: string;
   newPassword: string;
 }
-
-type ApiStatus = 'Ganhou' | 'Perdeu' | 'Pendente';
-type BetStatus = 'win' | 'loss' | 'pending';
-
 export interface UserBetData {
   id: string;
   userId: string;
