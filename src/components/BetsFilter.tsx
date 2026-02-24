@@ -53,72 +53,73 @@ export default function BetsFilter({ onFilterChange, suggestions = [] }: BetsFil
   };
 
   return (
-    <div className="bg-white p-2 md:p-4 rounded-lg shadow-md">
-      <div className="grid grid-cols-1 md:grid-cols-4 gap-2 md:gap-4">
-        <div ref={searchRef} className="relative">
-          <label htmlFor="search" className="block text-sm font-medium text-gray-700 mb-1">
-            Pesquisar
+    <div className="glass p-3 md:p-4 rounded-xl shadow-lg mb-6 border border-white/5">
+      <div className="flex flex-col md:flex-row md:justify-end items-start md:items-center gap-3">
+        <div ref={searchRef} className="w-full md:w-auto flex items-center gap-3 relative">
+          <label htmlFor="search" className="text-xs font-bold text-gray-400 uppercase tracking-wide whitespace-nowrap">
+            Pesquisar:
           </label>
-          <input
-            type="text"
-            id="search"
-            value={searchTerm}
-            onChange={(e) => {
-              setSearchTerm(e.target.value);
-              setShowSuggestions(true);
-            }}
-            onFocus={() => setShowSuggestions(true)}
-            placeholder="Nome do jogador ou do Time..."
-            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500 placeholder-gray-500"
-          />
-          {showSuggestions && filteredSuggestions.length > 0 && (
-            <div className="absolute z-10 w-full mt-1 bg-white rounded-md shadow-lg max-h-60 overflow-auto">
-              {filteredSuggestions.map((suggestion, index) => (
-                <div
-                  key={index}
-                  className="px-4 py-2 hover:bg-gray-100 cursor-pointer text-sm text-gray-700"
-                  onClick={() => handleSuggestionClick(suggestion)}
-                >
-                  {suggestion}
-                </div>
-              ))}
-            </div>
-          )}
+          <div className="relative w-full">
+            <input
+              type="text"
+              id="search"
+              value={searchTerm}
+              onChange={(e) => {
+                setSearchTerm(e.target.value);
+                setShowSuggestions(true);
+              }}
+              onFocus={() => setShowSuggestions(true)}
+              placeholder="Jogador ou Time..."
+              className="w-full md:w-64 bg-black/40 border border-white/10 text-white text-sm rounded-lg px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all placeholder-gray-500"
+            />
+            {showSuggestions && filteredSuggestions.length > 0 && (
+              <div className="absolute z-50 w-full mt-1 bg-[#18181b] border border-white/10 rounded-lg shadow-xl max-h-60 overflow-auto">
+                {filteredSuggestions.map((suggestion, index) => (
+                  <div
+                    key={index}
+                    className="px-4 py-2 hover:bg-white/5 cursor-pointer text-sm text-gray-300"
+                    onClick={() => handleSuggestionClick(suggestion)}
+                  >
+                    {suggestion}
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
         </div>
-        <div>
-          <label htmlFor="startDate" className="block text-sm font-medium text-gray-700 mb-1">
-            Data Inicial
+        <div className="w-full md:w-auto flex items-center gap-3">
+          <label htmlFor="startDate" className="text-xs font-bold text-gray-400 uppercase tracking-wide whitespace-nowrap">
+            De:
           </label>
           <input
             type="date"
             id="startDate"
             value={startDate}
             onChange={(e) => setStartDate(e.target.value)}
-            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full md:w-auto bg-black/40 border border-white/10 text-white text-sm rounded-lg px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all"
           />
         </div>
-        <div>
-          <label htmlFor="endDate" className="block text-sm font-medium text-gray-700 mb-1">
-            Data Final
+        <div className="w-full md:w-auto flex items-center gap-3">
+          <label htmlFor="endDate" className="text-xs font-bold text-gray-400 uppercase tracking-wide whitespace-nowrap">
+            Até:
           </label>
           <input
             type="date"
             id="endDate"
             value={endDate}
             onChange={(e) => setEndDate(e.target.value)}
-            className="w-full px-3 py-2 text-sm border border-gray-300 rounded-md focus:outline-none focus:ring-1 focus:ring-blue-500"
+            className="w-full md:w-auto bg-black/40 border border-white/10 text-white text-sm rounded-lg px-3 py-2 focus:ring-2 focus:ring-purple-500 focus:border-transparent outline-none transition-all"
           />
         </div>
-        <div className="flex items-end">
-          <button
-            onClick={handleSearch}
-            className="w-full px-4 py-2 bg-blue-600 text-white text-sm rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 flex items-center justify-center"
-          >
-            <span className="material-icons text-base mr-1">search</span>
-            Pesquisar
-          </button>
-        </div>
+        <button
+          onClick={handleSearch}
+          className="w-full md:w-auto h-[38px] px-6 flex items-center justify-center bg-purple-600 hover:bg-purple-500 text-white font-medium rounded-lg transition-all shadow-lg hover:shadow-purple-500/25"
+          title="Search"
+        >
+          <span className="material-icons text-sm mr-2">search</span>
+          <span className="text-sm">Filtrar</span>
+        </button>
       </div>
     </div>
   );
-} 
+}

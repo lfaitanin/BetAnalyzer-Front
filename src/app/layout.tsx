@@ -1,19 +1,19 @@
 import type { Metadata } from "next";
-import { Sidebar } from "@/components/sidebar";
 import "./globals.css";
 import PWAInstallPrompt from "@/components/PWAInstallPrompt";
 import Script from "next/script";
+import { LanguageProvider } from "@/hooks/useTranslation";
 
 export const metadata: Metadata = {
-  title: "BasketBet Pro",
+  title: "NBA-BETTHOR",
   description: "Dashboard de apostas esportivas para basquete",
   manifest: "/manifest.json",
-  themeColor: "#3b82f6",
+  themeColor: "#09090b",
   viewport: "width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no",
   appleWebApp: {
     capable: true,
-    statusBarStyle: "default",
-    title: "BasketBet Pro",
+    statusBarStyle: "black-translucent",
+    title: "NBA-BETTHOR",
   },
   icons: {
     icon: [
@@ -26,31 +26,32 @@ export const metadata: Metadata = {
   },
 };
 
+import { ThemeProvider } from "@/hooks/useTheme";
+
 export default function RootLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
   return (
-    <html lang="pt-BR" className="bg-gray-100">
+    <html lang="pt-BR">
       <head>
         <link
           href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined"
           rel="stylesheet"
         />
         <meta name="apple-mobile-web-app-capable" content="yes" />
-        <meta name="apple-mobile-web-app-status-bar-style" content="default" />
-        <meta name="apple-mobile-web-app-title" content="BasketBet Pro" />
+        <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+        <meta name="apple-mobile-web-app-title" content="NBA-BETTHOR" />
         <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
       </head>
-      <body className="bg-gray-100">
-        <div className="flex min-h-screen bg-gray-100">
-          <Sidebar />
-          <main className="flex-1 p-2 md:p-6 pt-14 md:pt-6">
+      <body>
+        <ThemeProvider>
+          <LanguageProvider>
             {children}
-          </main>
-        </div>
-        <PWAInstallPrompt />
+            <PWAInstallPrompt />
+          </LanguageProvider>
+        </ThemeProvider>
         <Script src="/sw-register.js" strategy="afterInteractive" />
       </body>
     </html>

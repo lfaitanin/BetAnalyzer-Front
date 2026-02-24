@@ -1,26 +1,162 @@
 @import "tailwindcss";
 
+@custom-variant dark (&:is(.dark *));
+
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Flat Light Theme (Metricon Style) */
+  --background: #f8fafc;
+  /* Slate 50 */
+  --foreground: #0f172a;
+  /* Slate 900 */
+
+  --card: #ffffff;
+  /* White */
+  --card-foreground: #0f172a;
+
+  --popover: #ffffff;
+  --popover-foreground: #0f172a;
+
+  --primary: #0d9488;
+  /* Teal 600 - Main Brand */
+  --primary-foreground: #ffffff;
+
+  --secondary: #e2e8f0;
+  /* Slate 200 */
+  --secondary-foreground: #0f172a;
+
+  --muted: #f1f5f9;
+  /* Slate 100 */
+  --muted-foreground: #64748b;
+  /* Slate 500 */
+
+  --accent: #f1f5f9;
+  --accent-foreground: #0f172a;
+
+  --destructive: #ef4444;
+  --destructive-foreground: #ffffff;
+
+  --border: #e2e8f0;
+  /* Slate 200 */
+  --input: #e2e8f0;
+  --ring: #0d9488;
+
+  --radius: 0.75rem;
+}
+
+.dark {
+  /* Gen Z / Cyberpunk Palette (Legacy Dark Mode) */
+  --background: #09090b;
+  /* Zinc 950 */
+  --foreground: #fafafa;
+  /* Zinc 50 */
+
+  --card: #18181b;
+  /* Zinc 900 */
+  --card-foreground: #fafafa;
+
+  --popover: #09090b;
+  --popover-foreground: #fafafa;
+
+  --primary: #a855f7;
+  /* Purple 500 */
+  --primary-foreground: #fafafa;
+
+  --secondary: #22c55e;
+  /* Green 500 */
+  --secondary-foreground: #09090b;
+
+  --muted: #27272a;
+  /* Zinc 800 */
+  --muted-foreground: #a1a1aa;
+  /* Zinc 400 */
+
+  --accent: #27272a;
+  --accent-foreground: #fafafa;
+
+  --destructive: #ef4444;
+  --destructive-foreground: #fafafa;
+
+  --border: #27272a;
+  --input: #27272a;
+  --ring: #a855f7;
 }
 
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
+  --color-card: var(--card);
+  --color-card-foreground: var(--card-foreground);
+  --color-primary: var(--primary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-secondary: var(--secondary);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-muted: var(--muted);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-accent: var(--accent);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-destructive: var(--destructive);
+  --color-destructive-foreground: var(--destructive-foreground);
+  --color-border: var(--border);
+  --color-input: var(--input);
+  --color-ring: var(--ring);
+  --radius-lg: var(--radius);
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+  /* Custom Animations */
+  --animate-glow: glow 2s ease-in-out infinite alternate;
+
+  @keyframes glow {
+    from {
+      box-shadow: 0 0 10px -10px var(--primary);
+    }
+
+    to {
+      box-shadow: 0 0 20px 5px var(--primary);
+    }
+  }
+
+  --animate-glimmer: glimmer 2s linear infinite;
+
+  @keyframes glimmer {
+    0% {
+      background-position: -200% 0;
+    }
+
+    100% {
+      background-position: 200% 0;
+    }
   }
 }
 
 body {
-  background: var(--background);
+  background-color: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  font-family: var(--font-sans), sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* Glassmorphism Utilities */
+.glass {
+  background: rgba(24, 24, 27, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.glass-hover:hover {
+  background: rgba(39, 39, 42, 0.8);
+  border-color: rgba(168, 85, 247, 0.5);
+  /* Purple border on hover */
+  transition: all 0.3s ease;
+}
+
+/* Neon Text */
+.text-neon-purple {
+  color: #c084fc;
+  text-shadow: 0 0 10px rgba(192, 132, 252, 0.5);
+}
+
+.text-neon-green {
+  color: #4ade80;
+  text-shadow: 0 0 10px rgba(74, 222, 128, 0.5);
 }
