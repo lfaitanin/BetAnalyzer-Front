@@ -3,30 +3,45 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import Link from 'next/link';
+import { register, login } from '@/services/authService';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function RegisterPage() {
     const router = useRouter();
+    const { refreshUser } = useAuth();
     const [name, setName] = useState('');
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [confirmPassword, setConfirmPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
 
-    const handleRegister = (e: React.FormEvent) => {
+    const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
+        setError('');
 
         if (password !== confirmPassword) {
-            alert("Passwords do not match!");
+            setError('As senhas não coincidem.');
             return;
         }
 
         setLoading(true);
 
-        // Simulate API call
-        setTimeout(() => {
+        const result = await register(name, email, password, confirmPassword);
+        if (result.success) {
+            // Auto-login after successful registration
+            const loginResult = await login(email, password);
+            if (loginResult.success) {
+                refreshUser();
+                router.push('/dashboard');
+            } else {
+                // Registration worked but auto-login failed — redirect to login page
+                router.push('/login');
+            }
+        } else {
+            setError(result.message);
             setLoading(false);
-            router.push('/dashboard');
-        }, 1000);
+        }
     };
 
     return (
@@ -132,6 +147,13 @@ export default function RegisterPage() {
                                 />
                             </div>
                         </div>
+
+                        {error && (
+                            <div className="flex items-center gap-2 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm font-medium">
+                                <span className="material-icons text-base">error_outline</span>
+                                {error}
+                            </div>
+                        )}
 
                         <button
                             type="submit"

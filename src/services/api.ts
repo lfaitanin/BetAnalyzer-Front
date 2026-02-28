@@ -1,4 +1,13 @@
+import { getToken } from './authService';
+
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'https://localhost:7275';
+
+function getAuthHeaders(): HeadersInit {
+  const token = getToken();
+  return token
+    ? { 'Authorization': `Bearer ${token}`, 'Content-Type': 'application/json' }
+    : { 'Content-Type': 'application/json' };
+}
 
 export interface MonthlyProfit {
   month: string;
@@ -78,7 +87,9 @@ export async function getDashboardData(startDate?: string, endDate?: string, use
     if (endDate) queryParams.append('endDate', endDate);
     if (userId) queryParams.append('userId', userId);
 
-    const response = await fetch(`${API_URL}/api/BettingAnalysis/dashboard?${queryParams.toString()}`);
+    const response = await fetch(`${API_URL}/api/BettingAnalysis/dashboard?${queryParams.toString()}`, {
+      headers: getAuthHeaders(),
+    });
     if (!response.ok) {
       throw new Error('Erro ao carregar dados do dashboard');
     }
@@ -96,7 +107,9 @@ export async function getTopCategories(startDate?: string, endDate?: string, use
     if (endDate) queryParams.append('endDate', endDate);
     if (userId) queryParams.append('userId', userId);
 
-    const response = await fetch(`${API_URL}/api/BettingAnalysis/top-categories?${queryParams.toString()}`);
+    const response = await fetch(`${API_URL}/api/BettingAnalysis/top-categories?${queryParams.toString()}`, {
+      headers: getAuthHeaders(),
+    });
     if (!response.ok) {
       throw new Error('Erro ao carregar categorias');
     }
@@ -115,7 +128,9 @@ export async function getBetHistory(filters: BetHistoryFilters): Promise<BetHist
     if (filters.searchTerm) queryParams.append('searchTerm', filters.searchTerm);
     if (filters.category) queryParams.append('category', filters.category);
 
-    const response = await fetch(`${API_URL}/api/BettingAnalysis/history?${queryParams.toString()}`);
+    const response = await fetch(`${API_URL}/api/BettingAnalysis/history?${queryParams.toString()}`, {
+      headers: getAuthHeaders(),
+    });
     if (!response.ok) {
       throw new Error('Erro ao carregar histórico de apostas');
     }
@@ -132,7 +147,9 @@ export async function getBetHistory(filters: BetHistoryFilters): Promise<BetHist
 
 export async function getLiveBets(): Promise<LiveBet[]> {
   try {
-    const response = await fetch(`${API_URL}/api/BettingAnalysis/live`);
+    const response = await fetch(`${API_URL}/api/BettingAnalysis/live`, {
+      headers: getAuthHeaders(),
+    });
     if (!response.ok) {
       throw new Error('Erro ao carregar apostas em tempo real');
     }
@@ -147,7 +164,7 @@ export async function pickBet(betId: number, stake: number): Promise<void> {
   try {
     const response = await fetch(`${API_URL}/api/BettingAnalysis/pick`, {
       method: 'POST',
-      headers: { 'Content-Type': 'application/json' },
+      headers: getAuthHeaders(),
       body: JSON.stringify({ betId, stake }),
     });
     if (!response.ok) {

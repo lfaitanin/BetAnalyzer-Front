@@ -8,8 +8,10 @@ RUN npm ci
 
 COPY . .
 
-# Accept API URL as a build argument to inline it into the static bundle
-ARG NEXT_PUBLIC_API_URL=http://213.199.59.34:5001
+# Accept API URL as a build argument — MUST be passed at build time.
+# Dev fallback: http://localhost:5001 (only used when building locally without docker-compose.prod.yml)
+# Production: docker-compose.prod.yml passes https://${DOMAIN}/api via build args
+ARG NEXT_PUBLIC_API_URL=http://localhost:5001
 ENV NEXT_PUBLIC_API_URL=${NEXT_PUBLIC_API_URL}
 
 RUN npm run build

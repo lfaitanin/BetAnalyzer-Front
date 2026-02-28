@@ -3,6 +3,7 @@ import "./globals.css";
 import PWAInstallPrompt from "@/components/PWAInstallPrompt";
 import Script from "next/script";
 import { LanguageProvider } from "@/hooks/useTranslation";
+import { AuthProvider } from "@/contexts/AuthContext";
 
 export const metadata: Metadata = {
   title: "NBA-BETTHOR",
@@ -46,12 +47,14 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icons/icon-192x192.png" />
       </head>
       <body>
-        <ThemeProvider>
-          <LanguageProvider>
-            {children}
-            <PWAInstallPrompt />
-          </LanguageProvider>
-        </ThemeProvider>
+        <AuthProvider>
+          <ThemeProvider>
+            <LanguageProvider>
+              {children}
+              <PWAInstallPrompt />
+            </LanguageProvider>
+          </ThemeProvider>
+        </AuthProvider>
         <Script src="/sw-register.js" strategy="afterInteractive" />
       </body>
     </html>

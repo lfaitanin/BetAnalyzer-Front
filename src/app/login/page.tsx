@@ -1,24 +1,34 @@
 'use client';
 
 import { useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
+import { login } from '@/services/authService';
+import { useAuth } from '@/contexts/AuthContext';
 
 export default function LoginPage() {
     const router = useRouter();
+    const searchParams = useSearchParams();
+    const { refreshUser } = useAuth();
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [loading, setLoading] = useState(false);
+    const [error, setError] = useState('');
 
-    const handleLogin = (e: React.FormEvent) => {
+    const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();
         setLoading(true);
+        setError('');
 
-        // Simulate API call
-        setTimeout(() => {
+        const result = await login(email, password);
+        if (result.success) {
+            refreshUser();
+            const redirect = searchParams.get('redirect') || '/dashboard';
+            router.push(redirect);
+        } else {
+            setError(result.message);
             setLoading(false);
-            router.push('/dashboard');
-        }, 1000);
+        }
     };
 
     return (
@@ -87,6 +97,13 @@ export default function LoginPage() {
                                 />
                             </div>
                         </div>
+
+                        {error && (
+                            <div className="flex items-center gap-2 p-3 rounded-xl bg-red-500/10 border border-red-500/20 text-red-400 text-sm font-medium">
+                                <span className="material-icons text-base">error_outline</span>
+                                {error}
+                            </div>
+                        )}
 
                         <button
                             type="submit"
